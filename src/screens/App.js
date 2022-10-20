@@ -13,7 +13,7 @@ export default function App() {
       <GlobalStyle />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<TimelineScreen />} />
+          <Route path="/timeline" element={<TimelineScreen />} />
           <Route path="/sign-up" element={<SignUpScreen />} />
         </Routes>
       </BrowserRouter>
