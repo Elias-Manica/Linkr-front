@@ -14,8 +14,8 @@ function getUserInfo(id) {
 }
 
 function searchUsers(text) {
-	const result = axios.get(`${DEPLOY_URL}/users`, { text });
-	return result;
+	const promise = axios.get(`${DEPLOY_URL}/users`, { text });
+	return promise;
 }
 
 export { postSignUp, searchUsers };

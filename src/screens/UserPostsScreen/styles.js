@@ -32,16 +32,6 @@ const Logo = styled.h1`
 	color: #ffffff;
 `;
 
-const SearchBar = styled.div`
-	width: 563px;
-	height: 45px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 8px;
-	color: red;
-`;
-
 const Header = styled.div`
 	position: fixed;
 	left: 0;
@@ -58,6 +48,10 @@ const Header = styled.div`
 		height: 53px;
 		width: 53px;
 	}
+
+	.searchBar {
+		width: 50%;
+	}
 `;
 
-export { UserPostsTitle, Container, Logo, SearchBar, Header };
+export { UserPostsTitle, Container, Logo, Header };

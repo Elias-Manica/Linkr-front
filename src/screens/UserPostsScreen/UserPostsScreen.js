@@ -2,15 +2,11 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { DebounceInput } from "react-debounce-input";
 import axios from "axios";
-import {
-	Container,
-	Header,
-	Logo,
-	SearchBar,
-	UserPostsTitle,
-} from "./styles.js";
+import { Container, Header, Logo, UserPostsTitle } from "./styles.js";
 import UserPosts from "../../components/UserPosts.js/UserPosts.js";
 import { searchUsers } from "../../services/linkrService.js";
+import { AiOutlineSearch } from "react-icons/ai";
+import { IconContext } from "react-icons";
 
 export default function UserPostsScreen() {
 	const { id } = useParams();
@@ -29,22 +25,33 @@ export default function UserPostsScreen() {
 			setUserPosts(result.data.posts);
 		});
 	}, []);
+
+	function SearchButton() {
+		return (
+			<IconContext.Provider>
+				<AiOutlineSearch />
+			</IconContext.Provider>
+		);
+	}
 	return (
 		<>
 			<Header>
 				<Logo>linkr</Logo>
-				<SearchBar>
-					<DebounceInput
-						minLength={3}
-						debounceTimeout={300}
-						onChange={(event) => {
-							setSearchValue(event.target.value);
-							const test = searchUsers(searchValue);
-							console.log(test);
-						}}
-					/>
-					<p>value: {searchValue}</p>
-				</SearchBar>
+				<DebounceInput
+					type="text"
+					className="searchBar"
+					placeholder="Search for people"
+					width="100px"
+					minLength={3}
+					debounceTimeout={300}
+					onChange={(event) => {
+						setSearchValue(event.target.value);
+						const promise = searchUsers(searchValue);
+						promise.then((result) => {
+							console.log(result.data);
+						});
+					}}
+				/>
 				<img src={profileUrl} alt="" />
 			</Header>
 			<Container>

@@ -48,7 +48,6 @@ const PictureLikeContainer = styled.div`
 	align-items: center;
 	width: 20%;
 	height: 100%;
-	border: 1px solid lightgreen;
 	img {
 		border-radius: 50%;
 		height: 50px;
