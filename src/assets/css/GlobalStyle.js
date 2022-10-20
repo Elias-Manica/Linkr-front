@@ -52,9 +52,13 @@ a{
     text-decoration: none;
 }
 *{
+	font-family: 'Lato', sans-serif;
+	font-family: 'Oswald', sans-serif;
+	font-family: 'Passion One', cursive;
     box-sizing: border-box;
 }
 body{
+	background-color: #333333;
     font-family: 'Lexend Deca';
 }
 `;
