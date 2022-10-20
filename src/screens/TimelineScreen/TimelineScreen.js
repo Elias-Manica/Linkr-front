@@ -6,6 +6,7 @@ import {
   Container,
   ContainerCreatePost,
   ContainerDelete,
+  ContainerDescription,
   ContainerEdit,
   ContainerIconEdit,
   ContainerImage,
@@ -40,7 +41,9 @@ export default function TimelineScreen() {
       setListOfPosts(response.data);
     } catch (error) {
       console.log(error);
-      alert(`${error.response.data.message}`);
+      alert(
+        `An error occured while trying to fetch the posts, please refresh the page`
+      );
     }
   }
 
@@ -79,12 +82,19 @@ export default function TimelineScreen() {
                           </ContainerDelete>
                         </ContainerIconEdit>
                       </ContainerNameEdit>
-                      <DescriptionPost>{value.text}</DescriptionPost>
+                      <ContainerDescription>
+                        <DescriptionPost>
+                          {value.text}{" "}
+                          {value.hashtags[0] === null
+                            ? null
+                            : value.hashtags.map((item) => `#${item} `)}
+                        </DescriptionPost>
+                      </ContainerDescription>
                     </ContainerInfosPost>
                   </ViewPost>
                 ))
               ) : (
-                <h1>Sem posts</h1>
+                <h1>There are no posts yet</h1>
               )}
             </ContainerPosts>
             <ContainerTrends>

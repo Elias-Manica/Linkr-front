@@ -164,3 +164,19 @@ export const DescriptionPost = styled.p`
   margin-top: 10px;
   color: #b7b7b7;
 `;
+
+export const ContainerDescription = styled.div`
+  display: flex;
+`;
+
+export const DescriptionHashtag = styled.p`
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 20px;
+  margin-top: 10px;
+  color: #ffffff;
+  display: flex;
+  margin-left: 3px;
+`;
