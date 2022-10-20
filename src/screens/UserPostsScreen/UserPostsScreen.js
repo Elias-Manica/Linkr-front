@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { DebounceInput } from "react-debounce-input";
 import axios from "axios";
 import {
 	Container,
@@ -9,12 +10,14 @@ import {
 	UserPostsTitle,
 } from "./styles.js";
 import UserPosts from "../../components/UserPosts.js/UserPosts.js";
+import { searchUsers } from "../../services/linkrService.js";
 
 export default function UserPostsScreen() {
 	const { id } = useParams();
 	const [username, setUsername] = useState("");
 	const [profileUrl, setProfileUrl] = useState("");
 	const [userPosts, setUserPosts] = useState([]);
+	const [searchValue, setSearchValue] = useState("");
 	useEffect(() => {
 		const promise = axios.get(
 			`https://back-projetao-linkr-aefj.herokuapp.com/users/${id}`
@@ -31,7 +34,16 @@ export default function UserPostsScreen() {
 			<Header>
 				<Logo>linkr</Logo>
 				<SearchBar>
-					<input type="text" />
+					<DebounceInput
+						minLength={3}
+						debounceTimeout={300}
+						onChange={(event) => {
+							setSearchValue(event.target.value);
+							const test = searchUsers(searchValue);
+							console.log(test);
+						}}
+					/>
+					<p>value: {searchValue}</p>
 				</SearchBar>
 				<img src={profileUrl} alt="" />
 			</Header>

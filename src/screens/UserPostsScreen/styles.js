@@ -39,6 +39,7 @@ const SearchBar = styled.div`
 	align-items: center;
 	justify-content: center;
 	border-radius: 8px;
+	color: red;
 `;
 
 const Header = styled.div`
