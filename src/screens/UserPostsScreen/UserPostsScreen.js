@@ -26,25 +26,32 @@ export default function UserPostsScreen() {
 				<SearchBar>
 					<input type="text" />
 				</SearchBar>
-				<profileImage src={profileUrl} alt="" />
+				<img src={profileUrl} alt="" />
 			</Header>
 			<Container>
 				<UserPostsTitle>
-					<profileImage src={profileUrl} alt="" />
-					<h1>{username} posts</h1>
+					<img src={profileUrl} alt="" />
+					<h1>{username}'s posts</h1>
 				</UserPostsTitle>
 			</Container>
 		</>
 	);
 }
 
-const profileImage = styled.img`
-	object-fit: cover;
-	border-radius: 50%;
-	height: 50px;
-	width: 50px;
+const UserPostsTitle = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #ffffff;
+	font-size: 43px;
+	line-height: 63px;
+	img {
+		border-radius: 50%;
+		height: 53px;
+		width: 53px;
+		margin: 0px 10px;
+	}
 `;
-const UserPostsTitle = styled.div``;
 
 const Container = styled.div`
 	padding: 0px 10px;
@@ -80,4 +87,9 @@ const Header = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	img {
+		border-radius: 50%;
+		height: 53px;
+		width: 53px;
+	}
 `;
