@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import TimelineScreen from "./TimelineScreen/TimelineScreen";
 import SignUpScreen from "./SignUpScreen/SignUpScreen";
+import LoginScreen from "./LoginScreen/LoginScreen";
 
 export default function App() {
   return (
@@ -13,7 +14,7 @@ export default function App() {
       <GlobalStyle />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<TimelineScreen />} />
+          <Route path="/" element={<LoginScreen />} />
           <Route path="/sign-up" element={<SignUpScreen />} />
         </Routes>
       </BrowserRouter>
