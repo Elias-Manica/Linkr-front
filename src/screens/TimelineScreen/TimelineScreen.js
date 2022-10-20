@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import Microlink from "@microlink/react";
+
 import { listPosts } from "../../services/postService";
 
 import {
@@ -12,6 +14,7 @@ import {
   ContainerImage,
   ContainerInfosPost,
   ContainerInfosTimeLine,
+  ContainerLink,
   ContainerNameEdit,
   ContainerOfViewsInfos,
   ContainerPosts,
@@ -37,7 +40,7 @@ export default function TimelineScreen() {
   async function getPostsTimeLine() {
     try {
       const response = await listPosts();
-
+      console.log(response.data);
       setListOfPosts(response.data);
     } catch (error) {
       console.log(error);
@@ -89,6 +92,9 @@ export default function TimelineScreen() {
                             ? null
                             : value.hashtags.map((item) => `#${item} `)}
                         </DescriptionPost>
+                        <ContainerLink>
+                          <Microlink url={value.link} />
+                        </ContainerLink>
                       </ContainerDescription>
                     </ContainerInfosPost>
                   </ViewPost>

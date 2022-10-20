@@ -67,7 +67,6 @@ export const ViewHashtags = styled.div`
 `;
 
 export const ViewPost = styled.div`
-  height: 276px;
   background: #171717;
   border-radius: 16px;
   width: 100%;
@@ -165,9 +164,7 @@ export const DescriptionPost = styled.p`
   color: #b7b7b7;
 `;
 
-export const ContainerDescription = styled.div`
-  display: flex;
-`;
+export const ContainerDescription = styled.div``;
 
 export const DescriptionHashtag = styled.p`
   font-family: "Lato";
@@ -179,4 +176,9 @@ export const DescriptionHashtag = styled.p`
   color: #ffffff;
   display: flex;
   margin-left: 3px;
+`;
+
+export const ContainerLink = styled.div`
+  margin-top: 15px;
+  margin-bottom: 20px;
 `;
