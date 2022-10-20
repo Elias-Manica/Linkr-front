@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import Microlink from "@microlink/react";
 import { Oval } from "react-loader-spinner";
 
 import { listPosts } from "../../services/postService";
@@ -8,34 +7,18 @@ import { listPosts } from "../../services/postService";
 import {
   Container,
   ContainerCreatePost,
-  ContainerDelete,
-  ContainerDescription,
-  ContainerEdit,
-  ContainerIconEdit,
-  ContainerImage,
-  ContainerInfosPost,
   ContainerInfosTimeLine,
-  ContainerLink,
   ContainerLoading,
-  ContainerNameEdit,
   ContainerOfViewsInfos,
   ContainerPosts,
   ContainerTrends,
-  ContainerUser,
-  DescriptionPost,
-  NameUser,
   TextEmpty,
-  TextLike,
   Title,
   ViewHashtags,
-  ViewIcon,
-  ViewPost,
 } from "./styles";
 
 import TopBar from "../../Components/TopBar/TopBar";
-
-import { IoMdHeartEmpty } from "react-icons/io";
-import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
+import PostUser from "../../Components/PostUser/PostUser";
 
 export default function TimelineScreen() {
   const [listOfPosts, setListOfPosts] = useState([]);
@@ -86,41 +69,7 @@ export default function TimelineScreen() {
                   />
                 </ContainerLoading>
               ) : listOfPosts.length > 0 ? (
-                listOfPosts.map((value) => (
-                  <ViewPost key={value.id}>
-                    <ContainerUser>
-                      <ContainerImage src={value.pictureurl} />
-                      <ViewIcon>
-                        <IoMdHeartEmpty />
-                      </ViewIcon>
-                      <TextLike>{value.qtdlikes} likes</TextLike>
-                    </ContainerUser>
-                    <ContainerInfosPost>
-                      <ContainerNameEdit>
-                        <NameUser>{value.username}</NameUser>
-                        <ContainerIconEdit>
-                          <ContainerEdit>
-                            <HiOutlinePencilSquare />
-                          </ContainerEdit>
-                          <ContainerDelete>
-                            <HiOutlineTrash />
-                          </ContainerDelete>
-                        </ContainerIconEdit>
-                      </ContainerNameEdit>
-                      <ContainerDescription>
-                        <DescriptionPost>
-                          {value.text}{" "}
-                          {value.hashtags[0] === null
-                            ? null
-                            : value.hashtags.map((item) => `#${item} `)}
-                        </DescriptionPost>
-                        <ContainerLink>
-                          <Microlink url={value.link} />
-                        </ContainerLink>
-                      </ContainerDescription>
-                    </ContainerInfosPost>
-                  </ViewPost>
-                ))
+                listOfPosts.map((value) => <PostUser value={value} />)
               ) : (
                 <TextEmpty>There are no posts yet :(</TextEmpty>
               )}
