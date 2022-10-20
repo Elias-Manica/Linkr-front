@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import Microlink from "@microlink/react";
+import { Oval } from "react-loader-spinner";
 
 import { listPosts } from "../../services/postService";
 
@@ -15,6 +16,7 @@ import {
   ContainerInfosPost,
   ContainerInfosTimeLine,
   ContainerLink,
+  ContainerLoading,
   ContainerNameEdit,
   ContainerOfViewsInfos,
   ContainerPosts,
@@ -22,6 +24,7 @@ import {
   ContainerUser,
   DescriptionPost,
   NameUser,
+  TextEmpty,
   TextLike,
   Title,
   ViewHashtags,
@@ -36,13 +39,17 @@ import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
 
 export default function TimelineScreen() {
   const [listOfPosts, setListOfPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   async function getPostsTimeLine() {
+    setLoading(true);
     try {
       const response = await listPosts();
-      console.log(response.data);
+
       setListOfPosts(response.data);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.log(error);
       alert(
         `An error occured while trying to fetch the posts, please refresh the page`
@@ -63,9 +70,24 @@ export default function TimelineScreen() {
           <ContainerInfosTimeLine>
             <ContainerPosts>
               <ContainerCreatePost />
-              {listOfPosts.length > 0 ? (
+              {loading ? (
+                <ContainerLoading>
+                  <Oval
+                    height={80}
+                    width={80}
+                    color="#171717"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    visible={true}
+                    ariaLabel="oval-loading"
+                    secondaryColor="#FFFFFF"
+                    strokeWidth={2}
+                    strokeWidthSecondary={2}
+                  />
+                </ContainerLoading>
+              ) : listOfPosts.length > 0 ? (
                 listOfPosts.map((value) => (
-                  <ViewPost>
+                  <ViewPost key={value.id}>
                     <ContainerUser>
                       <ContainerImage src={value.pictureurl} />
                       <ViewIcon>
@@ -100,7 +122,7 @@ export default function TimelineScreen() {
                   </ViewPost>
                 ))
               ) : (
-                <h1>There are no posts yet</h1>
+                <TextEmpty>There are no posts yet :(</TextEmpty>
               )}
             </ContainerPosts>
             <ContainerTrends>

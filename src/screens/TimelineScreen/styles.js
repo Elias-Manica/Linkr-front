@@ -182,3 +182,22 @@ export const ContainerLink = styled.div`
   margin-top: 15px;
   margin-bottom: 20px;
 `;
+
+export const ContainerLoading = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+`;
+
+export const TextEmpty = styled.h1`
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 64px;
+  /* identical to box height */
+  text-align: center;
+  color: #ffffff;
+  margin-top: 20px;
+`;
