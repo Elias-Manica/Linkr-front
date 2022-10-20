@@ -8,15 +8,16 @@ import UserPostsScreen from "./UserPostsScreen/UserPostsScreen";
 import SignUpScreen from "./SignUpScreen/SignUpScreen";
 
 export default function App() {
-	return (
-		<>
-			<GlobalStyle />
-			<BrowserRouter>
-				<Routes>
-					<Route path="/" element={<TimelineScreen />} />
-					<Route path="/sign-up" element={<SignUpScreen />} />
-					<Route path="/users/:id" element={<UserPostsScreen />} />
-				</Routes>
-			</BrowserRouter>
-		</>
-	);
+  return (
+    <>
+      <GlobalStyle />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/timeline" element={<TimelineScreen />} />
+          <Route path="/sign-up" element={<SignUpScreen />} />
+		  <Route path="/users/:id" element={<UserPostsScreen />} />
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
+}
