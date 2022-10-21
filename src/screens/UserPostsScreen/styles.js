@@ -32,15 +32,6 @@ const Logo = styled.h1`
 	color: #ffffff;
 `;
 
-const SearchBar = styled.div`
-	width: 563px;
-	height: 45px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 8px;
-`;
-
 const Header = styled.div`
 	position: fixed;
 	left: 0;
@@ -57,6 +48,26 @@ const Header = styled.div`
 		height: 53px;
 		width: 53px;
 	}
+
+	.searchBar {
+		width: 50%;
+	}
 `;
 
-export { UserPostsTitle, Container, Logo, SearchBar, Header };
+const SearchArea = styled.div`
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	.search {
+		width: 50%;
+	}
+
+	/* .hidden {
+		display: none;
+	} */
+`;
+
+export { UserPostsTitle, Container, Logo, Header, SearchArea };
