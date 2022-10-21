@@ -11,14 +11,13 @@ import {
   ContainerLoading,
   ContainerOfViewsInfos,
   ContainerPosts,
-  ContainerTrends,
   TextEmpty,
   Title,
-  ViewHashtags,
 } from "./styles";
 
 import TopBar from "../../Components/TopBar/TopBar";
 import PostUser from "../../Components/PostUser/PostUser";
+import HashtagDiv from "../../Components/HashtagDiv/HashtagDiv";
 
 export default function TimelineScreen() {
   const [listOfPosts, setListOfPosts] = useState([]);
@@ -52,7 +51,7 @@ export default function TimelineScreen() {
           <Title>timeline</Title>
           <ContainerInfosTimeLine>
             <ContainerPosts>
-              <ContainerCreatePost />
+              <ContainerCreatePost></ContainerCreatePost>
               {loading ? (
                 <ContainerLoading>
                   <Oval
@@ -74,9 +73,7 @@ export default function TimelineScreen() {
                 <TextEmpty>There are no posts yet :(</TextEmpty>
               )}
             </ContainerPosts>
-            <ContainerTrends>
-              <ViewHashtags />
-            </ContainerTrends>
+            <HashtagDiv />
           </ContainerInfosTimeLine>
         </ContainerOfViewsInfos>
       </Container>
