@@ -3,6 +3,8 @@ import { GlobalStyle } from "../assets/css/GlobalStyle";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import TimelineScreen from "./TimelineScreen/TimelineScreen";
 import PostScreen from "./PostScreen/PostScreen.js";
+import UserPostsScreen from "./UserPostsScreen/UserPostsScreen";
+import SignUpScreen from "./SignUpScreen/SignUpScreen";
 
 export default function App() {
   return (
@@ -12,6 +14,9 @@ export default function App() {
         <Routes>
           <Route path="/" element={<TimelineScreen />} />
           <Route path="/publish" element={<PostScreen />} />
+          <Route path="/timeline" element={<TimelineScreen />} />
+          <Route path="/sign-up" element={<SignUpScreen />} />
+		  <Route path="/users/:id" element={<UserPostsScreen />} />
         </Routes>
       </BrowserRouter>
     </>
