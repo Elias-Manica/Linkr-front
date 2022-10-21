@@ -18,4 +18,9 @@ function searchUsers(text) {
 	return promise;
 }
 
-export { postSignUp, searchUsers };
+function postLogin(body) {
+	const promise = axios.post(`${BASE_URL}/signin`, body);
+	return promise;
+}
+
+export { postSignUp, postLogin, searchUsers };
