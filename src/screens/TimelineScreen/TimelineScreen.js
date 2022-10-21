@@ -19,9 +19,33 @@ import TopBar from "../../Components/TopBar/TopBar";
 import PostUser from "../../Components/PostUser/PostUser";
 import HashtagDiv from "../../Components/HashtagDiv/HashtagDiv";
 
+const hashtagApi = [
+  {
+    id: 2,
+    name: "descanso",
+    quantidade: "2",
+  },
+  {
+    id: 1,
+    name: "entretenimento",
+    quantidade: "2",
+  },
+  {
+    id: 3,
+    name: "trabalho",
+    quantidade: "1",
+  },
+  {
+    id: 4,
+    name: "dev",
+    quantidade: "1",
+  },
+];
+
 export default function TimelineScreen() {
   const [listOfPosts, setListOfPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [loadingHashtag, setLoadingHashtag] = useState(false);
 
   async function getPostsTimeLine() {
     setLoading(true);
@@ -68,12 +92,14 @@ export default function TimelineScreen() {
                   />
                 </ContainerLoading>
               ) : listOfPosts.length > 0 ? (
-                listOfPosts.map((value) => <PostUser value={value} />)
+                listOfPosts.map((value, index) => (
+                  <PostUser value={value} key={index} />
+                ))
               ) : (
                 <TextEmpty>There are no posts yet :(</TextEmpty>
               )}
             </ContainerPosts>
-            <HashtagDiv />
+            <HashtagDiv hashtag={hashtagApi} loadingHashtag={loadingHashtag} />
           </ContainerInfosTimeLine>
         </ContainerOfViewsInfos>
       </Container>

@@ -1,28 +1,52 @@
 import {
   ContainerHashtag,
+  ContainerLoading,
+  ContainerText,
   ContainerTrends,
   LineTrend,
   SubTitleHashtag,
+  TextEmpty,
   TextHashtag,
   TittleTrend,
   ViewHashtags,
 } from "./styles";
 
-export default function HashtagDiv() {
+import { Oval } from "react-loader-spinner";
+
+export default function HashtagDiv({ hashtag, loadingHashtag }) {
   return (
     <ContainerTrends>
       <ViewHashtags>
         <TittleTrend>trending</TittleTrend>
         <LineTrend />
         <ContainerHashtag>
-          <TextHashtag>javascript</TextHashtag>
-          <SubTitleHashtag>1 linkr</SubTitleHashtag>
-          <TextHashtag>react</TextHashtag>
-          <SubTitleHashtag>2 linkr</SubTitleHashtag>
-          <TextHashtag>javascript</TextHashtag>
-          <TextHashtag>react</TextHashtag>
-          <TextHashtag>javascript</TextHashtag>
-          <TextHashtag>react</TextHashtag>
+          {loadingHashtag ? (
+            <ContainerLoading>
+              <Oval
+                height={80}
+                width={80}
+                color="#171717"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+                ariaLabel="oval-loading"
+                secondaryColor="#FFFFFF"
+                strokeWidth={2}
+                strokeWidthSecondary={2}
+              />
+            </ContainerLoading>
+          ) : hashtag.length > 0 ? (
+            hashtag.map((value) => (
+              <ContainerText key={value.id}>
+                <TextHashtag>#{value.name}</TextHashtag>
+                <SubTitleHashtag>{value.quantidade} linkr</SubTitleHashtag>
+              </ContainerText>
+            ))
+          ) : (
+            <TextEmpty>
+              There are no trending hashtags at the moment :(
+            </TextEmpty>
+          )}
         </ContainerHashtag>
       </ViewHashtags>
     </ContainerTrends>

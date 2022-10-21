@@ -68,7 +68,7 @@ export const NameUser = styled.p`
   font-size: 19px;
   line-height: 23px;
   /* identical to box height */
-
+  cursor: pointer;
   color: #ffffff;
 `;
 

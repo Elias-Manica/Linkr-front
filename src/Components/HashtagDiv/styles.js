@@ -8,10 +8,10 @@ export const ContainerTrends = styled.div`
 `;
 
 export const ViewHashtags = styled.div`
-  height: 406px;
   background: #171717;
   border-radius: 16px;
   padding-top: 18px;
+  padding-bottom: 18px;
 `;
 
 export const TittleTrend = styled.h1`
@@ -59,4 +59,24 @@ export const SubTitleHashtag = styled.p`
   color: #b7b7b7;
   margin-left: 22px;
   margin-bottom: 3px;
+`;
+
+export const ContainerText = styled.div``;
+
+export const TextEmpty = styled.p`
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 23px;
+  letter-spacing: 0.05em;
+  margin-left: 22px;
+  color: #ffffff;
+`;
+
+export const ContainerLoading = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
 `;
