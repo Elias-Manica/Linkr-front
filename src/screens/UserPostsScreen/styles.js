@@ -54,4 +54,20 @@ const Header = styled.div`
 	}
 `;
 
-export { UserPostsTitle, Container, Logo, Header };
+const SearchArea = styled.div`
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	.search {
+		width: 50%;
+	}
+
+	/* .hidden {
+		display: none;
+	} */
+`;
+
+export { UserPostsTitle, Container, Logo, Header, SearchArea };
