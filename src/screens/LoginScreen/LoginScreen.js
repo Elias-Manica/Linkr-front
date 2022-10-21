@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { postLogin } from "../../services/linkrService";
 import { Button, Form, LeftContainer, RightContainer, Wrapper } from "./styles";
@@ -11,9 +11,11 @@ export default function LoginScreen() {
         password: "" 
     });
 
-    if(localStorage.getItem("linkr") !== null) {
-        navigate("/timeline");
-    }
+    useEffect(() => {
+        if(localStorage.getItem("linkr") !== null) {
+            navigate("/timeline");
+        }
+    }, []);
 
     function handleForm(event) {
         setForm({
