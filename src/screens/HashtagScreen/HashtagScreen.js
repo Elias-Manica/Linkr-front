@@ -26,6 +26,13 @@ export default function HashtagScreen() {
   const [loading, setLoading] = useState(false);
   const [loadingHashtag, setLoadingHashtag] = useState(false);
   const [hashtagList, setHashtagList] = useState([]);
+  const [showMenu, setShowMenu] = useState(false);
+
+  function hideMenu() {
+    if (showMenu) {
+      setShowMenu(false);
+    }
+  }
 
   const getPostsHashtag = useCallback(async () => {
     setLoading(true);
@@ -58,7 +65,11 @@ export default function HashtagScreen() {
 
   return (
     <>
-      <TopBar />
+      <TopBar
+        showMenu={showMenu}
+        setShowMenu={setShowMenu}
+        hideMenu={hideMenu}
+      />
       <Container>
         <ContainerOfViewsInfos>
           <Title>#{hashtag}</Title>

@@ -24,6 +24,13 @@ export default function TimelineScreen() {
   const [loading, setLoading] = useState(false);
   const [loadingHashtag, setLoadingHashtag] = useState(false);
   const [hashtagList, setHashtagList] = useState([]);
+  const [showMenu, setShowMenu] = useState(false);
+
+  function hideMenu() {
+    if (showMenu) {
+      setShowMenu(false);
+    }
+  }
 
   async function getPostsTimeLine() {
     setLoading(true);
@@ -63,7 +70,11 @@ export default function TimelineScreen() {
 
   return (
     <>
-      <TopBar />
+      <TopBar
+        showMenu={showMenu}
+        setShowMenu={setShowMenu}
+        hideMenu={hideMenu}
+      />
       <Container>
         <ContainerOfViewsInfos>
           <Title>timeline</Title>

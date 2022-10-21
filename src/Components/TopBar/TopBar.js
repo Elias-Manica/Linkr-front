@@ -1,18 +1,41 @@
-import { Container, ContainerImage, ContainerInfosUser, Logo } from "./styles";
+import {
+  Container,
+  ContainerImage,
+  ContainerInfosUser,
+  Logo,
+  Menu,
+} from "./styles";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { postLogout } from "../../services/linkrService";
 
-import { IoIosArrowDown } from "react-icons/io";
+export default function TopBar({ showMenu, setShowMenu, hideMenu }) {
+  const navigate = useNavigate();
+  const userInfo = JSON.parse(localStorage.getItem("linkr"));
 
-export default function TopBar() {
+  function userLogout() {
+    postLogout(userInfo.token)
+      .then(() => {
+        localStorage.removeItem("linkr");
+        navigate("/");
+      })
+      .catch(() => {
+        alert("Error!");
+      });
+  }
+
   return (
     <>
-      <Container>
-        <Logo>Linkr</Logo>
-        <ContainerInfosUser>
-          <IoIosArrowDown />
-          <ContainerImage
-            src={"https://pbs.twimg.com/media/Etgtr65XEAEaFms.jpg"}
-          />
+      <Container onClick={hideMenu}>
+        <Logo onClick={() => navigate("/timeline")}>Linkr</Logo>
+        <ContainerInfosUser onClick={() => setShowMenu(!showMenu)}>
+          {showMenu === false ? <IoIosArrowDown /> : <IoIosArrowUp />}
+          <ContainerImage src={userInfo.pictureurl} alt="user-picture" />
         </ContainerInfosUser>
+        <Menu onClick={userLogout} showMenu={showMenu}>
+          Logout
+        </Menu>
       </Container>
     </>
   );
