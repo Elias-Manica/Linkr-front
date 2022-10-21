@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { postSignUp } from "../../services/linkrService";
 import { Button, Form, LeftContainer, RightContainer, Wrapper } from "./styles";
@@ -12,6 +12,12 @@ export default function SignUpScreen() {
         username: "", 
         pictureurl: "" 
     });
+
+    useEffect(() => {
+        if(localStorage.getItem("linkr") !== null) {
+            navigate("/timeline");
+        }
+    }, []);
 
     function handleForm(event) {
         setForm({

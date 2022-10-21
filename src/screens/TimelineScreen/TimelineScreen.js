@@ -40,6 +40,13 @@ import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
 export default function TimelineScreen() {
   const [listOfPosts, setListOfPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
+
+  function hideMenu() {
+    if(showMenu) {
+      setShowMenu(false);
+    }
+  }
 
   async function getPostsTimeLine() {
     setLoading(true);
@@ -63,8 +70,8 @@ export default function TimelineScreen() {
 
   return (
     <>
-      <TopBar />
-      <Container>
+      <TopBar showMenu={showMenu} setShowMenu={setShowMenu} hideMenu={hideMenu} />
+      <Container onClick={hideMenu}>
         <ContainerOfViewsInfos>
           <Title>timeline</Title>
           <ContainerInfosTimeLine>

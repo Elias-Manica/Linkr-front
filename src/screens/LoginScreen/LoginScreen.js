@@ -38,8 +38,12 @@ export default function LoginScreen() {
         postLogin(form)
             .then(resp => {
                 setDisabled(false);
-                const infoJSON = JSON.stringify({ token: resp.data.token });
-                localStorage.setItem("linkr", infoJSON);
+                const userInfoJSON = JSON.stringify({ 
+                    username: resp.data.username, 
+                    pictureurl: resp.data.pictureurl, 
+                    token: resp.data.token }
+                );
+                localStorage.setItem("linkr", userInfoJSON);
                 navigate("/timeline");
             })
             .catch(resp => {
