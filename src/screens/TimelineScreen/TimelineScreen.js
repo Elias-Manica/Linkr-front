@@ -34,7 +34,7 @@ export default function TimelineScreen() {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log(error);
+
       alert(
         `An error occured while trying to fetch the posts, please refresh the page`
       );
@@ -49,7 +49,7 @@ export default function TimelineScreen() {
       setLoadingHashtag(false);
     } catch (error) {
       setLoadingHashtag(false);
-      console.log(error);
+
       alert(
         `An error occured while trying to fetch the hashtags, please refresh the page`
       );

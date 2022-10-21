@@ -13,6 +13,8 @@ import {
 
 import { Oval } from "react-loader-spinner";
 
+import { Link } from "react-router-dom";
+
 export default function HashtagDiv({ hashtag, loadingHashtag }) {
   return (
     <ContainerTrends>
@@ -38,7 +40,9 @@ export default function HashtagDiv({ hashtag, loadingHashtag }) {
           ) : hashtag.length > 0 ? (
             hashtag.map((value) => (
               <ContainerText key={value.id}>
-                <TextHashtag>#{value.name}</TextHashtag>
+                <Link to={`/hashtag/${value.name}`}>
+                  <TextHashtag>#{value.name}</TextHashtag>
+                </Link>
                 <SubTitleHashtag>{value.quantidade} linkr</SubTitleHashtag>
               </ContainerText>
             ))
