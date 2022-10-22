@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 import Microlink from "@microlink/react";
 import { Oval } from "react-loader-spinner";
 
-import { listPosts } from "../../services/postService";
-
+import { listPosts, listHashtags } from "../../services/postService";
+import useLocalStorage from "../../hooks/localStorage";
 import {
   Container,
   ContainerCreatePost,
@@ -36,6 +36,9 @@ import TopBar from "../../Components/TopBar/TopBar";
 
 import { IoMdHeartEmpty } from "react-icons/io";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
+import PostUser from "../../Components/PostUser/PostUser";
+import HashtagDiv from "../../Components/HashtagDiv/HashtagDiv";
+import NewPost from "../NewPost/NewPost";
 
 export default function TimelineScreen() {
   const [listOfPosts, setListOfPosts] = useState([]);
@@ -52,7 +55,6 @@ export default function TimelineScreen() {
     setLoading(true);
     try {
       const response = await listPosts();
-
       setListOfPosts(response.data);
       setLoading(false);
     } catch (error) {
@@ -77,6 +79,7 @@ export default function TimelineScreen() {
           <ContainerInfosTimeLine>
             <ContainerPosts>
               <ContainerCreatePost />
+              <NewPost data={ getPostsTimeLine } />
               {loading ? (
                 <ContainerLoading>
                   <Oval

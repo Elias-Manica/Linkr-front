@@ -2,13 +2,21 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { postLogin } from "../../services/linkrService";
 import { Button, Form, LeftContainer, RightContainer, Wrapper } from "./styles";
+import useLocalStorage from "../../hooks/localStorage";
 
 export default function LoginScreen() {
-    const navigate = useNavigate();
-    const [disabled, setDisabled] = useState(false);
-    const [form, setForm] = useState({
-        email: "", 
-        password: "" 
+  const navigate = useNavigate();
+  const [local, setLocal] = useLocalStorage("linkr");
+  const [disabled, setDisabled] = useState(false);
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  function handleForm(event) {
+    setForm({
+      ...form,
+      [event.target.name]: event.target.value,
     });
 
     useEffect(() => {
@@ -16,13 +24,30 @@ export default function LoginScreen() {
             navigate("/timeline");
         }
     }, []);
+  }
 
-    function handleForm(event) {
-        setForm({
-            ...form, 
-            [event.target.name]: event.target.value
+  function login(event) {
+    event.preventDefault();
+
+    setDisabled(true);
+
+    postLogin(form)
+      .then((resp) => {
+        setDisabled(false);
+        setLocal({
+          userid: resp.data.userid, 
+          username: resp.data.username, 
+          pictureurl: resp.data.pictureurl, 
+          token: resp.data.token, 
         });
-    }
+        navigate("/timeline");
+      })
+      .catch((resp) => {
+        setDisabled(false);
+        console.error(resp);
+        alert("E-mail or password are invalid!");
+      });
+  }
 
     function verifyEmptyFields() {
         if(form.email === "" || form.password === "" || form.username === "" || form.pictureurl === "") {
@@ -30,7 +55,7 @@ export default function LoginScreen() {
         }
     }
 
-    function login(event) {
+    /*function login(event) {
         event.preventDefault();
 
         setDisabled(true);
@@ -52,7 +77,7 @@ export default function LoginScreen() {
                 console.error(resp);
                 alert("E-mail or password are invalid!");
             });
-    }
+    }*/
 
     return (
         <Wrapper>
