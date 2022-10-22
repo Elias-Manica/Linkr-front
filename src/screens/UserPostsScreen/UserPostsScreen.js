@@ -4,14 +4,21 @@ import { DebounceInput } from "react-debounce-input";
 import axios from "axios";
 import {
 	Container,
-	Header,
-	Logo,
-	UserPostsTitle,
-	SearchArea,
-} from "./styles.js";
-import UserPosts from "../../components/UserPosts.js/UserPosts.js";
-import { searchUsers } from "../../services/linkrService.js";
+	ContainerInfosTimeLine,
+	ContainerLoading,
+	ContainerOfViewsInfos,
+	ContainerPosts,
+	TextEmpty,
+	Title,
+} from "../TimelineScreen/styles.js";
+import { getUserInfo, searchUsers } from "../../services/linkrService.js";
 import UserSearchInfo from "../../components/UserPosts.js/UserSearchInfo.js";
+import TopBar from "../../Components/TopBar/TopBar.js";
+import PostUser from "../../Components/PostUser/PostUser.js";
+import { listHashtags } from "../../services/postService.js";
+import { Oval } from "react-loader-spinner";
+import HashtagDiv from "../../Components/HashtagDiv/HashtagDiv.js";
+import { TitleImg } from "./styles.js";
 
 export default function UserPostsScreen() {
 	const { id } = useParams();
@@ -21,17 +28,44 @@ export default function UserPostsScreen() {
 	const [searchValue, setSearchValue] = useState("");
 	const [searchResult, setSearchResult] = useState([]);
 	const [searchClass, setSearchClass] = useState("hidden");
-	useEffect(() => {
-		const promise = axios.get(
-			`https://back-projetao-linkr-aefj.herokuapp.com/users/${id}`
-		);
-		promise.then((result) => {
-			setUsername(result.data.username);
-			setProfileUrl(result.data.pictureurl);
-			setUserPosts(result.data.posts);
-		});
-	}, []);
+	const [loading, setLoading] = useState(false);
+	const [loadingHashtag, setLoadingHashtag] = useState(false);
+	const [hashtagList, setHashtagList] = useState([]);
+	const [showMenu, setShowMenu] = useState(false);
 
+	function hideMenu() {
+		if (showMenu) {
+			setShowMenu(false);
+		}
+	}
+
+	async function getHashtags() {
+		setLoadingHashtag(true);
+		try {
+			const response = await listHashtags();
+			setHashtagList(response.data);
+			setLoadingHashtag(false);
+		} catch (error) {
+			setLoadingHashtag(false);
+
+			alert(
+				`An error occured while trying to fetch the hashtags, please refresh the page`
+			);
+		}
+	}
+
+	async function getUserPosts(id) {
+		setLoading(true);
+		try {
+			const result = await getUserInfo(id);
+			setUsername(result.data[0].username);
+			setProfileUrl(result.data[0].pictureurl);
+			setUserPosts(result.data);
+			setLoading(false);
+		} catch (error) {
+			console.error(error);
+		}
+	}
 	function handleDebounce(event) {
 		if (event.target.value.length < 3) {
 			setSearchClass("hidden");
@@ -50,9 +84,19 @@ export default function UserPostsScreen() {
 			});
 	}
 
+	useEffect(() => {
+		getHashtags();
+		getUserPosts(id);
+	}, []);
+
 	return (
 		<>
-			<Header>
+			<TopBar
+				showMenu={showMenu}
+				setShowMenu={setShowMenu}
+				hideMenu={hideMenu}
+			/>
+			{/* <Header>
 				<Logo>linkr</Logo>
 				<SearchArea>
 					<DebounceInput
@@ -76,24 +120,41 @@ export default function UserPostsScreen() {
 				</SearchArea>
 
 				<img src={profileUrl} alt="" />
-			</Header>
+			</Header> */}
 			<Container>
-				<UserPostsTitle>
-					<img src={profileUrl} alt="" />
-					<h1>{username}'s posts</h1>
-				</UserPostsTitle>
-				{userPosts.length === 0
-					? "Efeito de carregamento bonitinho"
-					: userPosts.map((post, index) => {
-							return (
-								<UserPosts
-									post={post}
-									key={index}
-									username={username}
-									profileUrl={profileUrl}
-								/>
-							);
-					  })}
+				<ContainerOfViewsInfos>
+					<Title>
+						<TitleImg src={profileUrl} alt="" />
+						{username}
+					</Title>
+					<ContainerInfosTimeLine>
+						<ContainerPosts>
+							{loading === true ? (
+								<ContainerLoading>
+									<Oval
+										height={80}
+										width={80}
+										color="#171717"
+										wrapperStyle={{}}
+										wrapperClass=""
+										visible={true}
+										ariaLabel="oval-loading"
+										secondaryColor="#FFFFFF"
+										strokeWidth={2}
+										strokeWidthSecondary={2}
+									/>
+								</ContainerLoading>
+							) : userPosts.length > 0 ? (
+								userPosts.map((value, index) => (
+									<PostUser value={value} key={index} />
+								))
+							) : (
+								<TextEmpty>There are no posts yet :(</TextEmpty>
+							)}
+						</ContainerPosts>
+						<HashtagDiv hashtag={hashtagList} loadingHashtag={loadingHashtag} />
+					</ContainerInfosTimeLine>
+				</ContainerOfViewsInfos>
 			</Container>
 		</>
 	);

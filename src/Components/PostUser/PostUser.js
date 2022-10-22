@@ -23,9 +23,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function PostUser({ value }) {
 	const navigate = useNavigate();
+
 	function goToUserPage() {
-		console.log(value);
-		console.log("cliquei");
 		navigate(`/users/${value.userid}`);
 	}
 	return (

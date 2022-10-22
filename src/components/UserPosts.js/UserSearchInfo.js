@@ -1,8 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 export default function UserSearchInfo({ user }) {
+	const navigate = useNavigate();
+	function goToUserPage() {
+		navigate(`/users/${user.id}`);
+	}
 	return (
-		<Wrapper>
+		<Wrapper onClick={() => goToUserPage()}>
 			<img src={user.pictureurl} alt="" />
 			<p>{user.username}</p>
 		</Wrapper>
@@ -29,5 +34,9 @@ const Wrapper = styled.div`
 		font-weight: 400;
 		color: #515151;
 		margin: 0px 10px;
+	}
+
+	&:hover {
+		cursor: pointer;
 	}
 `;
