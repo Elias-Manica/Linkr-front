@@ -7,4 +7,16 @@ async function listPosts() {
   return promise;
 }
 
-export { listPosts };
+async function listHashtags() {
+  const promise = await axios.get(`${BASE_URL}/hashtag`);
+  return promise;
+}
+
+async function listOneHashtag(hashtag) {
+  const promise = await axios.get(`${BASE_URL}/hashtag/${hashtag}`);
+  return promise;
+}
+
+//teste
+
+export { listPosts, listHashtags, listOneHashtag };

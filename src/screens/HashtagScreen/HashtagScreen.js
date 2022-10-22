@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+
+import { useParams } from "react-router-dom";
+
+import { listOneHashtag, listHashtags } from "../../services/postService";
+
+import TopBar from "../../Components/TopBar/TopBar";
+import PostUser from "../../Components/PostUser/PostUser";
+import HashtagDiv from "../../Components/HashtagDiv/HashtagDiv";
 
 import { Oval } from "react-loader-spinner";
 
-import { listPosts, listHashtags } from "../../services/postService";
-
 import {
   Container,
-  ContainerCreatePost,
   ContainerInfosTimeLine,
   ContainerLoading,
   ContainerOfViewsInfos,
@@ -15,12 +20,9 @@ import {
   Title,
 } from "./styles";
 
-import TopBar from "../../Components/TopBar/TopBar";
-import PostUser from "../../Components/PostUser/PostUser";
-import HashtagDiv from "../../Components/HashtagDiv/HashtagDiv";
-
-export default function TimelineScreen() {
-  const [listOfPosts, setListOfPosts] = useState([]);
+export default function HashtagScreen() {
+  const { hashtag } = useParams();
+  const [listHashtagsPosts, setListHashtagsPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingHashtag, setLoadingHashtag] = useState(false);
   const [hashtagList, setHashtagList] = useState([]);
@@ -32,41 +34,34 @@ export default function TimelineScreen() {
     }
   }
 
-  async function getPostsTimeLine() {
+  const getPostsHashtag = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await listPosts();
+      const response = await listOneHashtag(hashtag);
+      setListHashtagsPosts(response.data);
 
-      setListOfPosts(response.data);
       setLoading(false);
     } catch (error) {
       setLoading(false);
-
-      alert(
-        `An error occured while trying to fetch the posts, please refresh the page`
-      );
     }
-  }
+  }, [hashtag]);
 
   async function getHashtags() {
     setLoadingHashtag(true);
     try {
       const response = await listHashtags();
+
       setHashtagList(response.data);
       setLoadingHashtag(false);
     } catch (error) {
       setLoadingHashtag(false);
-
-      alert(
-        `An error occured while trying to fetch the hashtags, please refresh the page`
-      );
     }
   }
 
   useEffect(() => {
-    getPostsTimeLine();
+    getPostsHashtag();
     getHashtags();
-  }, []);
+  }, [getPostsHashtag]);
 
   return (
     <>
@@ -77,10 +72,9 @@ export default function TimelineScreen() {
       />
       <Container>
         <ContainerOfViewsInfos>
-          <Title>timeline</Title>
+          <Title>#{hashtag}</Title>
           <ContainerInfosTimeLine>
             <ContainerPosts>
-              <ContainerCreatePost></ContainerCreatePost>
               {loading ? (
                 <ContainerLoading>
                   <Oval
@@ -96,12 +90,14 @@ export default function TimelineScreen() {
                     strokeWidthSecondary={2}
                   />
                 </ContainerLoading>
-              ) : listOfPosts.length > 0 ? (
-                listOfPosts.map((value, index) => (
+              ) : listHashtagsPosts.length > 0 ? (
+                listHashtagsPosts.map((value, index) => (
                   <PostUser value={value} key={index} />
                 ))
               ) : (
-                <TextEmpty>There are no posts yet :(</TextEmpty>
+                <TextEmpty>
+                  There are no posts yet, in this hashtag :(
+                </TextEmpty>
               )}
             </ContainerPosts>
             <HashtagDiv hashtag={hashtagList} loadingHashtag={loadingHashtag} />
@@ -111,4 +107,3 @@ export default function TimelineScreen() {
     </>
   );
 }
-//teste

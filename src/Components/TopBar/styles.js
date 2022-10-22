@@ -24,6 +24,7 @@ export const Logo = styled.h2`
   font-size: 49px;
   line-height: 54px;
   letter-spacing: 0.05em;
+  cursor: pointer;
 `;
 
 export const ContainerInfosUser = styled.div`
@@ -44,11 +45,11 @@ export const ContainerImage = styled.img`
 
 export const Menu = styled.div`
   background-color: #151515;
-  display: ${props => props.showMenu ? "flex" : "none"};
+  display: ${(props) => (props.showMenu ? "flex" : "none")};
   justify-content: center;
   align-items: center;
-  color: #FFFFFF;
-  font-family: 'Lato';
+  color: #ffffff;
+  font-family: "Lato";
   font-size: 17px;
   font-weight: 700;
   width: 150px;
