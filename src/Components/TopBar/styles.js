@@ -1,3 +1,4 @@
+import { IoIosArrowDown } from "react-icons/io";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -16,16 +17,13 @@ export const Container = styled.div`
 `;
 
 export const Logo = styled.h2`
+  color: #ffffff;
   font-family: "Passion One";
   font-style: normal;
   font-weight: 700;
   font-size: 49px;
   line-height: 54px;
-  /* identical to box height */
-
   letter-spacing: 0.05em;
-
-  color: #ffffff;
 `;
 
 export const ContainerInfosUser = styled.div`
@@ -42,5 +40,23 @@ export const ContainerImage = styled.img`
   border-radius: 50%;
   object-fit: cover;
   margin-left: 10px;
+`;
+
+export const Menu = styled.div`
+  background-color: #151515;
+  display: ${props => props.showMenu ? "flex" : "none"};
+  justify-content: center;
+  align-items: center;
+  color: #FFFFFF;
+  font-family: 'Lato';
+  font-size: 17px;
+  font-weight: 700;
+  width: 150px;
+  height: 47px;
+  padding-bottom: 7px;
+  border-radius: 0px 0px 0px 20px;
   cursor: pointer;
+  position: absolute;
+  top: 72px;
+  right: 0;
 `;

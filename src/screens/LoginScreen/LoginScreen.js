@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { postSignUp } from "../../services/linkrService";
+import { postLogin } from "../../services/linkrService";
 import { Button, Form, LeftContainer, RightContainer, Wrapper } from "./styles";
 
-export default function SignUpScreen() {
+export default function LoginScreen() {
     const navigate = useNavigate();
     const [disabled, setDisabled] = useState(false);
     const [form, setForm] = useState({
         email: "", 
-        password: "", 
-        username: "", 
-        pictureurl: "" 
+        password: "" 
     });
 
     useEffect(() => {
@@ -32,20 +30,26 @@ export default function SignUpScreen() {
         }
     }
 
-    function signUp(event) {
+    function login(event) {
         event.preventDefault();
 
         setDisabled(true);
 
-        postSignUp(form)
+        postLogin(form)
             .then(resp => {
                 setDisabled(false);
-                navigate("/");
+                const userInfoJSON = JSON.stringify({ 
+                    username: resp.data.username, 
+                    pictureurl: resp.data.pictureurl, 
+                    token: resp.data.token }
+                );
+                localStorage.setItem("linkr", userInfoJSON);
+                navigate("/timeline");
             })
             .catch(resp => {
                 setDisabled(false);
                 console.error(resp);
-                if(resp.response.status === 409) return alert("E-mail already registered!");
+                alert("E-mail or password are invalid!");
             });
     }
 
@@ -56,7 +60,7 @@ export default function SignUpScreen() {
                 <h2>save, share and discover the best links on the web</h2>
             </LeftContainer>
             <RightContainer>
-                <Form onSubmit={signUp}>
+                <Form onSubmit={login}>
                     <input 
                         type="email" 
                         name="email" 
@@ -76,32 +80,12 @@ export default function SignUpScreen() {
                         disabled={disabled} 
                         required 
                     />
-
-                    <input 
-                        type="text" 
-                        name="username" 
-                        value={form.name} 
-                        placeholder="username" 
-                        onChange={handleForm} 
-                        disabled={disabled} 
-                        required 
-                    />
-
-                    <input 
-                        type="url" 
-                        name="pictureurl" 
-                        value={form.name} 
-                        placeholder="picture url" 
-                        onChange={handleForm} 
-                        disabled={disabled} 
-                        required 
-                    />
                     
-                    <Button type="submit" disabled={disabled} onClick={verifyEmptyFields}>Sign Up</Button>
+                    <Button type="submit" disabled={disabled} onClick={verifyEmptyFields}>Log In</Button>
                 </Form>
 
-                <Link to={"/"}>
-                    <p>Switch back to log in</p>
+                <Link to={"/sign-up"}>
+                    <p>First time? Create an account!</p>
                 </Link>
             </RightContainer>
         </Wrapper>
