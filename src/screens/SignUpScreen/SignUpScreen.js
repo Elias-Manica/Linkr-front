@@ -46,6 +46,10 @@ export default function SignUpScreen() {
                 setDisabled(false);
                 console.error(resp);
                 if(resp.response.status === 409) return alert("E-mail already registered!");
+                
+                if(resp.response.data.filter(value => value.includes("fails to match the required pattern:"))) {
+                    return alert("Unsupported URL format! Please choose another one");
+                }
             });
     }
 
