@@ -3,9 +3,9 @@ import styled from "styled-components";
 const Css = {
   NewPost: styled.div`
     height: 209px;
-    width: 611px;
+    width: 100%;
     background-color: white;
-    border-radius: 5px;
+    border-radius: 10px;
     display: flex;
     padding: 1rem;
 
@@ -15,6 +15,7 @@ const Css = {
       font-size: 20px;
       font-weight: 300;
       padding: 5px;
+      
     }
   `,
   ProfilePost: styled.div`
@@ -69,12 +70,11 @@ const Css = {
     background-color: #1877f2;
     border: none;
     cursor: pointer;
-    p {
-      color: #ffffff;
-      font-family: Lato;
-      font-size: 14px;
+    color: #ffffff;
+    font-size: 14px;
       font-weight: 700;
-    }
+      @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+      font-family: Lato;
   `,
   BoxButton: styled.div`
     display: flex;

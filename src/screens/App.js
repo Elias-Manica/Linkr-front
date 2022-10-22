@@ -5,6 +5,8 @@ import TimelineScreen from "./TimelineScreen/TimelineScreen";
 import PostScreen from "./PostScreen/PostScreen.js";
 import UserPostsScreen from "./UserPostsScreen/UserPostsScreen";
 import SignUpScreen from "./SignUpScreen/SignUpScreen";
+
+import HashtagScreen from "./HashtagScreen/HashtagScreen";
 import LoginScreen from "./LoginScreen/LoginScreen";
 
 export default function App() {
@@ -18,8 +20,11 @@ export default function App() {
           <Route path="/publish" element={<PostScreen />} />
 					<Route path="/timeline" element={<TimelineScreen />} />
 					<Route path="/users/:id" element={<UserPostsScreen />} />
+          <Route path="/hashtag/:hashtag" element={<HashtagScreen />} />
+
 				</Routes>
 			</BrowserRouter>
 		</>
 	);
+
 }
