@@ -78,7 +78,6 @@ export default function TimelineScreen() {
           <Title>timeline</Title>
           <ContainerInfosTimeLine>
             <ContainerPosts>
-              <ContainerCreatePost />
               <NewPost data={ getPostsTimeLine } />
               {loading ? (
                 <ContainerLoading>
