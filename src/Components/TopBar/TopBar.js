@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { postLogout, searchUsers } from "../../services/linkrService";
 import { DebounceInput } from "react-debounce-input";
-import UserSearchInfo from "../../components/UserPosts.js/UserSearchInfo";
+import UserSearchInfo from "../UserSearchInfo/UserSearchInfo";
 
 export default function TopBar({ showMenu, setShowMenu, hideMenu }) {
 	const [searchValue, setSearchValue] = useState("");

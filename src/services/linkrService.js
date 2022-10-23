@@ -17,7 +17,7 @@ function postSignUp(body) {
 	return promise;
 }
 
-function getUserInfo(id) {
+function getUserPosts(id) {
 	const result = axios.get(`${BASE_URL}/users/${id}`);
 	return result;
 }
@@ -38,4 +38,4 @@ function postLogout(token) {
 	return promise;
 }
 
-export { postSignUp, postLogin, postLogout, searchUsers, getUserInfo };
+export { postSignUp, postLogin, postLogout, searchUsers, getUserPosts };

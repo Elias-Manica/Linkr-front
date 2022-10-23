@@ -11,8 +11,7 @@ import {
 	TextEmpty,
 	Title,
 } from "../TimelineScreen/styles.js";
-import { getUserInfo, searchUsers } from "../../services/linkrService.js";
-import UserSearchInfo from "../../components/UserPosts.js/UserSearchInfo.js";
+import { getUserPosts, searchUsers } from "../../services/linkrService.js";
 import TopBar from "../../Components/TopBar/TopBar.js";
 import PostUser from "../../Components/PostUser/PostUser.js";
 import { listHashtags } from "../../services/postService.js";
@@ -25,9 +24,6 @@ export default function UserPostsScreen() {
 	const [username, setUsername] = useState("");
 	const [profileUrl, setProfileUrl] = useState("");
 	const [userPosts, setUserPosts] = useState([]);
-	const [searchValue, setSearchValue] = useState("");
-	const [searchResult, setSearchResult] = useState([]);
-	const [searchClass, setSearchClass] = useState("hidden");
 	const [loading, setLoading] = useState(false);
 	const [loadingHashtag, setLoadingHashtag] = useState(false);
 	const [hashtagList, setHashtagList] = useState([]);
@@ -54,39 +50,23 @@ export default function UserPostsScreen() {
 		}
 	}
 
-	async function getUserPosts(id) {
+	async function getPosts(id) {
 		setLoading(true);
 		try {
-			const result = await getUserInfo(id);
-			setUsername(result.data[0].username);
-			setProfileUrl(result.data[0].pictureurl);
+			const result = await getUserPosts(id);
+			console.log(result);
+			setUsername(result.data[0].userInfo.username);
+			setProfileUrl(result.data[0].userInfo.pictureurl);
 			setUserPosts(result.data);
 			setLoading(false);
 		} catch (error) {
 			console.error(error);
 		}
 	}
-	function handleDebounce(event) {
-		if (event.target.value.length < 3) {
-			setSearchClass("hidden");
-		}
-		setSearchValue(event.target.value);
-		searchUsers(searchValue)
-			.then((result) => {
-				console.log(result.data);
-				if (result.data.length > 0) {
-					setSearchClass("search");
-				}
-				setSearchResult(result.data);
-			})
-			.catch((response) => {
-				console.error(response);
-			});
-	}
 
 	useEffect(() => {
 		getHashtags();
-		getUserPosts(id);
+		getPosts(id);
 	}, []);
 
 	return (
@@ -96,31 +76,6 @@ export default function UserPostsScreen() {
 				setShowMenu={setShowMenu}
 				hideMenu={hideMenu}
 			/>
-			{/* <Header>
-				<Logo>linkr</Logo>
-				<SearchArea>
-					<DebounceInput
-						type="text"
-						value={searchValue}
-						className="searchBar"
-						placeholder="Search for people"
-						width="100px"
-						style={{
-							border: "none",
-						}}
-						minLength={3}
-						debounceTimeout={300}
-						onChange={handleDebounce}
-					/>
-					<div className={searchClass}>
-						{searchResult.map((user, index) => {
-							return <UserSearchInfo user={user} key={index} />;
-						})}
-					</div>
-				</SearchArea>
-
-				<img src={profileUrl} alt="" />
-			</Header> */}
 			<Container>
 				<ContainerOfViewsInfos>
 					<Title>
