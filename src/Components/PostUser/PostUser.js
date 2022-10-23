@@ -1,5 +1,9 @@
+import React, { useState } from "react";
+
 import { IoMdHeartEmpty } from "react-icons/io";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
+
+import { deletePost } from "../../services/postService";
 
 import {
   ContainerDelete,
@@ -20,7 +24,12 @@ import {
 
 import Microlink from "@microlink/react";
 
-export default function PostUser({ value }) {
+import ModalDelete from "../ModalDelete/ModalDelete";
+
+export default function PostUser({ value, getPostsTimeLine }) {
+  const userInfo = JSON.parse(localStorage.getItem("linkr"));
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <ViewPost key={value.id}>
       <ContainerUser>
@@ -37,7 +46,7 @@ export default function PostUser({ value }) {
             <ContainerEdit>
               <HiOutlinePencilSquare />
             </ContainerEdit>
-            <ContainerDelete>
+            <ContainerDelete onClick={() => setIsOpen(!isOpen)}>
               <HiOutlineTrash />
             </ContainerDelete>
           </ContainerIconEdit>
@@ -54,6 +63,12 @@ export default function PostUser({ value }) {
           </ContainerLink>
         </ContainerDescription>
       </ContainerInfosPost>
+      <ModalDelete
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        postId={value.id}
+        getPostsTimeLine={getPostsTimeLine}
+      />
     </ViewPost>
   );
 }

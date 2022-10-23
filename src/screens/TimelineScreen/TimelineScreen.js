@@ -80,7 +80,7 @@ export default function TimelineScreen() {
           <Title>timeline</Title>
           <ContainerInfosTimeLine>
             <ContainerPosts>
-              <NewPost data={ getPostsTimeLine } />
+              <NewPost getPostsTimeLine={getPostsTimeLine} />
               {loading ? (
                 <ContainerLoading>
                   <Oval
@@ -98,7 +98,11 @@ export default function TimelineScreen() {
                 </ContainerLoading>
               ) : listOfPosts.length > 0 ? (
                 listOfPosts.map((value, index) => (
-                  <PostUser value={value} key={index} />
+                  <PostUser
+                    value={value}
+                    key={index}
+                    getPostsTimeLine={getPostsTimeLine}
+                  />
                 ))
               ) : (
                 <TextEmpty>There are no posts yet :(</TextEmpty>
