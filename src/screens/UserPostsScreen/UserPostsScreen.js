@@ -4,96 +4,112 @@ import { DebounceInput } from "react-debounce-input";
 import axios from "axios";
 import {
 	Container,
-	Header,
-	Logo,
-	UserPostsTitle,
-	SearchArea,
-} from "./styles.js";
-import UserPosts from "../../components/UserPosts.js/UserPosts.js";
-import { searchUsers } from "../../services/linkrService.js";
-import UserSearchInfo from "../../components/UserPosts.js/UserSearchInfo.js";
+	ContainerInfosTimeLine,
+	ContainerLoading,
+	ContainerOfViewsInfos,
+	ContainerPosts,
+	TextEmpty,
+	Title,
+} from "../TimelineScreen/styles.js";
+import { getUserPosts } from "../../services/linkrService.js";
+import TopBar from "../../Components/TopBar/TopBar.js";
+import PostUser from "../../Components/PostUser/PostUser.js";
+import { listHashtags } from "../../services/postService.js";
+import { Oval } from "react-loader-spinner";
+import HashtagDiv from "../../Components/HashtagDiv/HashtagDiv.js";
+import { TitleImg } from "./styles.js";
 
 export default function UserPostsScreen() {
 	const { id } = useParams();
 	const [username, setUsername] = useState("");
 	const [profileUrl, setProfileUrl] = useState("");
 	const [userPosts, setUserPosts] = useState([]);
-	const [searchValue, setSearchValue] = useState("");
-	const [searchResult, setSearchResult] = useState([]);
-	const [searchClass, setSearchClass] = useState("hidden");
-	useEffect(() => {
-		const promise = axios.get(
-			`https://back-projetao-linkr-aefj.herokuapp.com/users/${id}`
-		);
-		promise.then((result) => {
-			setUsername(result.data.username);
-			setProfileUrl(result.data.pictureurl);
-			setUserPosts(result.data.posts);
-		});
-	}, []);
+	const [loading, setLoading] = useState(false);
+	const [loadingHashtag, setLoadingHashtag] = useState(false);
+	const [hashtagList, setHashtagList] = useState([]);
+	const [showMenu, setShowMenu] = useState(false);
 
-	function handleDebounce(event) {
-		if (event.target.value.length < 3) {
-			setSearchClass("hidden");
+	function hideMenu() {
+		if (showMenu) {
+			setShowMenu(false);
 		}
-		setSearchValue(event.target.value);
-		searchUsers(searchValue)
-			.then((result) => {
-				console.log(result.data);
-				if (result.data.length > 0) {
-					setSearchClass("search");
-				}
-				setSearchResult(result.data);
-			})
-			.catch((response) => {
-				console.error(response);
-			});
 	}
+
+	async function getHashtags() {
+		setLoadingHashtag(true);
+		try {
+			const response = await listHashtags();
+			setHashtagList(response.data);
+			setLoadingHashtag(false);
+		} catch (error) {
+			setLoadingHashtag(false);
+
+			alert(
+				`An error occured while trying to fetch the hashtags, please refresh the page`
+			);
+		}
+	}
+
+	async function getPosts(id) {
+		setLoading(true);
+		try {
+			const result = await getUserPosts(id);
+			console.log(result);
+			setUsername(result.data[0].userInfo.username);
+			setProfileUrl(result.data[0].userInfo.pictureurl);
+			setUserPosts(result.data);
+			setLoading(false);
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	useEffect(() => {
+		getHashtags();
+		getPosts(id);
+	}, [id]);
 
 	return (
 		<>
-			<Header>
-				<Logo>linkr</Logo>
-				<SearchArea>
-					<DebounceInput
-						type="text"
-						value={searchValue}
-						className="searchBar"
-						placeholder="Search for people"
-						width="100px"
-						style={{
-							border: "none",
-						}}
-						minLength={3}
-						debounceTimeout={300}
-						onChange={handleDebounce}
-					/>
-					<div className={searchClass}>
-						{searchResult.map((user, index) => {
-							return <UserSearchInfo user={user} key={index} />;
-						})}
-					</div>
-				</SearchArea>
-
-				<img src={profileUrl} alt="" />
-			</Header>
+			<TopBar
+				showMenu={showMenu}
+				setShowMenu={setShowMenu}
+				hideMenu={hideMenu}
+			/>
 			<Container>
-				<UserPostsTitle>
-					<img src={profileUrl} alt="" />
-					<h1>{username}'s posts</h1>
-				</UserPostsTitle>
-				{userPosts.length === 0
-					? "Efeito de carregamento bonitinho"
-					: userPosts.map((post, index) => {
-							return (
-								<UserPosts
-									post={post}
-									key={index}
-									username={username}
-									profileUrl={profileUrl}
-								/>
-							);
-					  })}
+				<ContainerOfViewsInfos>
+					<Title>
+						<TitleImg src={profileUrl} alt="" />
+						{username}
+					</Title>
+					<ContainerInfosTimeLine>
+						<ContainerPosts>
+							{loading === true ? (
+								<ContainerLoading>
+									<Oval
+										height={80}
+										width={80}
+										color="#171717"
+										wrapperStyle={{}}
+										wrapperClass=""
+										visible={true}
+										ariaLabel="oval-loading"
+										secondaryColor="#FFFFFF"
+										strokeWidth={2}
+										strokeWidthSecondary={2}
+									/>
+								</ContainerLoading>
+							) : userPosts.length > 0 ? (
+								userPosts.map((value, index) => (
+									<PostUser value={value} key={index} />
+								))
+							) : (
+								<TextEmpty>There are no posts yet :(</TextEmpty>
+							)}
+						</ContainerPosts>
+						<HashtagDiv hashtag={hashtagList} loadingHashtag={loadingHashtag} />
+					</ContainerInfosTimeLine>
+				</ContainerOfViewsInfos>
 			</Container>
 		</>
 	);
