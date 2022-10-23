@@ -82,9 +82,11 @@ export const SearchArea = styled.div`
 	}
 
 	.search {
-		position: relative;
-		top: 0;
+		position: absolute;
+		top: 25px;
 		width: 100%;
+		height: auto;
+		border-radius: 5px;
 	}
 
 	.hidden {

@@ -11,7 +11,7 @@ import {
 	TextEmpty,
 	Title,
 } from "../TimelineScreen/styles.js";
-import { getUserPosts, searchUsers } from "../../services/linkrService.js";
+import { getUserPosts } from "../../services/linkrService.js";
 import TopBar from "../../Components/TopBar/TopBar.js";
 import PostUser from "../../Components/PostUser/PostUser.js";
 import { listHashtags } from "../../services/postService.js";
@@ -67,7 +67,7 @@ export default function UserPostsScreen() {
 	useEffect(() => {
 		getHashtags();
 		getPosts(id);
-	}, []);
+	}, [id]);
 
 	return (
 		<>

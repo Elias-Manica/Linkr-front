@@ -23,7 +23,7 @@ function getUserPosts(id) {
 }
 
 function searchUsers(text) {
-	const promise = axios.post(`${BASE_URL}/users`, { text });
+	const promise = axios.post(`${DEPLOY_URL}/users`, { text });
 	return promise;
 }
 

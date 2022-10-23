@@ -32,10 +32,19 @@ export default function TopBar({ showMenu, setShowMenu, hideMenu }) {
 	}
 	async function getSearchResult(searchValue) {
 		try {
+			if (searchValue.length < 0) {
+				setSearchClass("hidden");
+				setSearchResult([]);
+				return;
+			}
 			const result = await searchUsers(searchValue);
 			console.log(result);
-			setSearchResult(result.data);
-			setSearchClass("search");
+			if (result.data.length > 0) {
+				setSearchResult(result.data);
+				setSearchClass("search");
+			} else {
+				setSearchClass("hidden");
+			}
 		} catch (error) {
 			console.error(error);
 		}
@@ -43,7 +52,9 @@ export default function TopBar({ showMenu, setShowMenu, hideMenu }) {
 
 	function handleDebounce(event) {
 		setSearchValue(event.target.value);
-		console.log(searchValue);
+		if (searchValue.length < 3) {
+			setSearchClass("hidden");
+		}
 		getSearchResult(searchValue);
 	}
 
@@ -57,8 +68,7 @@ export default function TopBar({ showMenu, setShowMenu, hideMenu }) {
 						value={searchValue}
 						className="searchBar"
 						placeholder="Search for people"
-						width="1000px"
-						minLength={3}
+						minLength={2}
 						debounceTimeout={300}
 						onChange={(e) => handleDebounce(e)}
 					/>

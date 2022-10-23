@@ -1,16 +1,14 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 export default function UserSearchInfo({ user }) {
-	const navigate = useNavigate();
-	function goToUserPage() {
-		navigate(`/users/${user.id}`);
-	}
 	return (
-		<Wrapper onClick={() => goToUserPage()}>
-			<img src={user.pictureurl} alt="" />
-			<p>{user.username}</p>
-		</Wrapper>
+		<Link to={`/users/${user.id}`}>
+			<Wrapper>
+				<img src={user.pictureurl} alt="" />
+				<p>{user.username}</p>
+			</Wrapper>
+		</Link>
 	);
 }
 
@@ -19,7 +17,6 @@ const Wrapper = styled.div`
 	width: 100%;
 	align-items: center;
 	background-color: #e6e6e6;
-	border-radius: 5px;
 	padding: 10px;
 
 	img {
