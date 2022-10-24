@@ -37,7 +37,7 @@ async function insertLikePost(token, postId, userId) {
 	};
 
 	const promise = await axios.post(
-		`${LOCAL_HOST}/post/like/${postId}`,
+		`${BASE_URL}/post/like/${postId}`,
 		{ userId },
 		config
 	);
@@ -55,7 +55,7 @@ async function removeLikePost(token, postId, userId) {
 	};
 
 	const promise = await axios.delete(
-		`${LOCAL_HOST}/post/dislike/${postId}`,
+		`${BASE_URL}/post/dislike/${postId}`,
 		config
 	);
 	return promise;
