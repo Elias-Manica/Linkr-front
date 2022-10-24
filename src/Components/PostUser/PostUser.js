@@ -25,6 +25,7 @@ import {
 import Microlink from "@microlink/react";
 import { useNavigate } from "react-router-dom";
 import ModalDelete from "../ModalDelete/ModalDelete";
+import { ReactTagify } from "react-tagify";
 
 export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
   const userInfo = JSON.parse(localStorage.getItem("linkr"));
@@ -34,6 +35,12 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
 
   function goToUserPage() {
     navigate(`/users/${value.userid}`);
+  }
+
+  function goToHashtagPage(name) {
+    const hashtag = name.substring(1);
+
+    navigate(`/hashtag/${hashtag}`);
   }
 
   const replaceText = useCallback(async () => {
@@ -58,7 +65,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
   return (
     <ViewPost key={value.id}>
       <ContainerUser>
-        <ContainerImage src={value.pictureurl} />
+        <ContainerImage src={value.pictureurl} onClick={() => goToUserPage()} />
         <ViewIcon>
           <IoMdHeartEmpty />
         </ViewIcon>
@@ -77,7 +84,12 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
           </ContainerIconEdit>
         </ContainerNameEdit>
         <ContainerDescription>
-          <DescriptionPost>{description}</DescriptionPost>
+          <ReactTagify
+            tagClicked={(tag) => goToHashtagPage(tag)}
+            tagStyle={{ color: "white", fontWeight: "bold", cursor: "pointer" }}
+          >
+            <DescriptionPost>{description}</DescriptionPost>
+          </ReactTagify>
           <ContainerLink>
             <Microlink url={value.link} />
           </ContainerLink>
