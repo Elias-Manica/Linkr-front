@@ -4,7 +4,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import TimelineScreen from "./TimelineScreen/TimelineScreen";
 import UserPostsScreen from "./UserPostsScreen/UserPostsScreen";
 import SignUpScreen from "./SignUpScreen/SignUpScreen";
-
 import HashtagScreen from "./HashtagScreen/HashtagScreen";
 import LoginScreen from "./LoginScreen/LoginScreen";
 
