@@ -20,6 +20,12 @@ export default function TopBar({ showMenu, setShowMenu, hideMenu }) {
 	const navigate = useNavigate();
 	const userInfo = JSON.parse(localStorage.getItem("linkr"));
 
+	useEffect(() => {
+		if(localStorage.getItem("linkr") === null) {
+			navigate("/");
+		}
+	  }, [navigate]);
+
 	function userLogout() {
 		postLogout(userInfo.token)
 			.then(() => {
