@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+import Microlink from "@microlink/react";
 import { Oval } from "react-loader-spinner";
 
 import { listPosts, listHashtags } from "../../services/postService";
@@ -16,6 +17,9 @@ import {
 } from "./styles";
 
 import TopBar from "../../Components/TopBar/TopBar";
+
+import { IoMdHeartEmpty } from "react-icons/io";
+import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
 import PostUser from "../../Components/PostUser/PostUser";
 import HashtagDiv from "../../Components/HashtagDiv/HashtagDiv";
 import NewPost from "../NewPost/NewPost";
@@ -75,7 +79,7 @@ export default function TimelineScreen() {
 				setShowMenu={setShowMenu}
 				hideMenu={hideMenu}
 			/>
-			<Container>
+			<Container onClick={hideMenu}>
 				<ContainerOfViewsInfos>
 					<Title>timeline</Title>
 					<ContainerInfosTimeLine>
@@ -111,4 +115,3 @@ export default function TimelineScreen() {
 		</>
 	);
 }
-//teste
