@@ -23,13 +23,18 @@ import {
 } from "./styles";
 
 import Microlink from "@microlink/react";
-
+import { useNavigate } from "react-router-dom";
 import ModalDelete from "../ModalDelete/ModalDelete";
 
 export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
   const userInfo = JSON.parse(localStorage.getItem("linkr"));
   const [isOpen, setIsOpen] = useState(false);
   const [description, setDescription] = useState("");
+  const navigate = useNavigate();
+
+  function goToUserPage() {
+    navigate(`/users/${value.userid}`);
+  }
 
   const replaceText = useCallback(async () => {
     const textSepareted = value.text.split(" ");
@@ -61,7 +66,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
       </ContainerUser>
       <ContainerInfosPost>
         <ContainerNameEdit>
-          <NameUser>{value.username}</NameUser>
+          <NameUser onClick={() => goToUserPage()}>{value.username}</NameUser>
           <ContainerIconEdit>
             <ContainerEdit>
               <HiOutlinePencilSquare />
