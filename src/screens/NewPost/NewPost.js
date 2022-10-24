@@ -1,21 +1,18 @@
 import Css from "./style";
 import React, { useState } from "react";
 import axios from "axios";
-import useLocalStorage from "../../hooks/localStorage";
 
 const NewPost = ({ getPostsTimeLine, getHashtags }) => {
 	const [publishing, setPublishing] = useState(true);
 	const [textInput, setTextInput] = useState("");
 	const [urlInput, setUrlInput] = useState("");
-	// const [local, setLocal] = useLocalStorage("linkr");
-	//const { getPostsTimeLine } = props.data
+	const userInfo = JSON.parse(localStorage.getItem("linkr"));
 
 	function click() {
 		if (textInput.length === 0) return;
 		if (urlInput.length === 0) return;
 		if (publishing === false) return;
 		setPublishing(false);
-		// console.log(local.token);
 
 		const headers = {
 			authorization: JSON.parse(localStorage.getItem("linkr")).token,
@@ -50,7 +47,7 @@ const NewPost = ({ getPostsTimeLine, getHashtags }) => {
 	return (
 		<Css.NewPost>
 			<Css.ProfileLabel>
-				<Css.ProfilePost />
+				<Css.ProfilePost src={userInfo.pictureurl} alt="user-picture" />
 			</Css.ProfileLabel>
 			<Css.PostLabel>
 				<h1>What are you going to share today?</h1>

@@ -4,7 +4,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import TimelineScreen from "./TimelineScreen/TimelineScreen";
 import UserPostsScreen from "./UserPostsScreen/UserPostsScreen";
 import SignUpScreen from "./SignUpScreen/SignUpScreen";
-
 import HashtagScreen from "./HashtagScreen/HashtagScreen";
 import LoginScreen from "./LoginScreen/LoginScreen";
 
@@ -16,10 +15,9 @@ export default function App() {
 				<Routes>
 					<Route path="/" element={<LoginScreen />} />
 					<Route path="/sign-up" element={<SignUpScreen />} />
-
 					<Route path="/timeline" element={<TimelineScreen />} />
 					<Route path="/users/:id" element={<UserPostsScreen />} />
-					<Route path="/hashtag/:hashtag" element={<HashtagScreen />} />
+          			<Route path="/hashtag/:hashtag" element={<HashtagScreen />} />
 				</Routes>
 			</BrowserRouter>
 		</>
