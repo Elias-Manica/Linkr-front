@@ -79,7 +79,7 @@ export const ContainerIconEdit = styled.div`
   align-items: center;
 `;
 
-export const ContainerEdit = styled.div`
+export const ContainerEdit = styled.button`
   margin-right: 10px;
   cursor: pointer;
 `;
@@ -115,4 +115,27 @@ export const DescriptionHashtag = styled.p`
 export const ContainerLink = styled.div`
   margin-top: 15px;
   margin-bottom: 20px;
+  width: 100%;
+`;
+
+export const ContainerEditInput = styled.input`
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 20px;
+
+  margin-top: 10px;
+  color: #4c4c4c;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 7px;
+`;
+
+export const ContainerLOading = styled.div`
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;

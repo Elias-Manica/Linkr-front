@@ -29,6 +29,17 @@ async function deletePost(token, id) {
   return promise;
 }
 
+async function updatePost(token, body, id) {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const promise = await axios.put(`${LOCAL_HOST}/post/${id}`, body, config);
+  return promise;
+}
+
 //teste
 
-export { listPosts, listHashtags, listOneHashtag, deletePost };
+export { listPosts, listHashtags, listOneHashtag, deletePost, updatePost };
