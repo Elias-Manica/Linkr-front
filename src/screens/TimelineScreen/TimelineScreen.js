@@ -6,30 +6,14 @@ import { Oval } from "react-loader-spinner";
 import { listPosts, listHashtags } from "../../services/postService";
 import useLocalStorage from "../../hooks/localStorage";
 import {
-  Container,
-  ContainerCreatePost,
-  ContainerDelete,
-  ContainerDescription,
-  ContainerEdit,
-  ContainerIconEdit,
-  ContainerImage,
-  ContainerInfosPost,
-  ContainerInfosTimeLine,
-  ContainerLink,
-  ContainerLoading,
-  ContainerNameEdit,
-  ContainerOfViewsInfos,
-  ContainerPosts,
-  ContainerTrends,
-  ContainerUser,
-  DescriptionPost,
-  NameUser,
-  TextEmpty,
-  TextLike,
-  Title,
-  ViewHashtags,
-  ViewIcon,
-  ViewPost,
+	Container,
+	ContainerCreatePost,
+	ContainerInfosTimeLine,
+	ContainerLoading,
+	ContainerOfViewsInfos,
+	ContainerPosts,
+	TextEmpty,
+	Title,
 } from "./styles";
 
 import TopBar from "../../Components/TopBar/TopBar";
@@ -41,105 +25,93 @@ import HashtagDiv from "../../Components/HashtagDiv/HashtagDiv";
 import NewPost from "../NewPost/NewPost";
 
 export default function TimelineScreen() {
-  const [listOfPosts, setListOfPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [showMenu, setShowMenu] = useState(false);
+	const [listOfPosts, setListOfPosts] = useState([]);
+	const [loading, setLoading] = useState(false);
+	const [loadingHashtag, setLoadingHashtag] = useState(false);
+	const [hashtagList, setHashtagList] = useState([]);
+	const [showMenu, setShowMenu] = useState(false);
 
-  function hideMenu() {
-    if(showMenu) {
-      setShowMenu(false);
-    }
-  }
+	function hideMenu() {
+		if (showMenu) {
+			setShowMenu(false);
+		}
+	}
 
-  async function getPostsTimeLine() {
-    setLoading(true);
-    try {
-      const response = await listPosts();
-      setListOfPosts(response.data);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-      alert(
-        `An error occured while trying to fetch the posts, please refresh the page`
-      );
-    }
-  }
+	async function getPostsTimeLine() {
+		setLoading(true);
+		try {
+			const response = await listPosts();
+			setListOfPosts(response.data);
+			setLoading(false);
+		} catch (error) {
+			setLoading(false);
 
-  useEffect(() => {
-    getPostsTimeLine();
-  }, []);
+			alert(
+				`An error occured while trying to fetch the posts, please refresh the page`
+			);
+		}
+	}
 
-  return (
-    <>
-      <TopBar showMenu={showMenu} setShowMenu={setShowMenu} hideMenu={hideMenu} />
-      <Container onClick={hideMenu}>
-        <ContainerOfViewsInfos>
-          <Title>timeline</Title>
-          <ContainerInfosTimeLine>
-            <ContainerPosts>
-              <NewPost data={ getPostsTimeLine } />
-              {loading ? (
-                <ContainerLoading>
-                  <Oval
-                    height={80}
-                    width={80}
-                    color="#171717"
-                    wrapperStyle={{}}
-                    wrapperClass=""
-                    visible={true}
-                    ariaLabel="oval-loading"
-                    secondaryColor="#FFFFFF"
-                    strokeWidth={2}
-                    strokeWidthSecondary={2}
-                  />
-                </ContainerLoading>
-              ) : listOfPosts.length > 0 ? (
-                listOfPosts.map((value) => (
-                  <ViewPost key={value.id}>
-                    <ContainerUser>
-                      <ContainerImage src={value.pictureurl} />
-                      <ViewIcon>
-                        <IoMdHeartEmpty />
-                      </ViewIcon>
-                      <TextLike>{value.qtdlikes} likes</TextLike>
-                    </ContainerUser>
-                    <ContainerInfosPost>
-                      <ContainerNameEdit>
-                        <NameUser>{value.username}</NameUser>
-                        <ContainerIconEdit>
-                          <ContainerEdit>
-                            <HiOutlinePencilSquare />
-                          </ContainerEdit>
-                          <ContainerDelete>
-                            <HiOutlineTrash />
-                          </ContainerDelete>
-                        </ContainerIconEdit>
-                      </ContainerNameEdit>
-                      <ContainerDescription>
-                        <DescriptionPost>
-                          {value.text}{" "}
-                          {value.hashtags[0] === null
-                            ? null
-                            : value.hashtags.map((item) => `#${item} `)}
-                        </DescriptionPost>
-                        <ContainerLink>
-                          <Microlink url={value.link} />
-                        </ContainerLink>
-                      </ContainerDescription>
-                    </ContainerInfosPost>
-                  </ViewPost>
-                ))
-              ) : (
-                <TextEmpty>There are no posts yet :(</TextEmpty>
-              )}
-            </ContainerPosts>
-            <ContainerTrends>
-              <ViewHashtags />
-            </ContainerTrends>
-          </ContainerInfosTimeLine>
-        </ContainerOfViewsInfos>
-      </Container>
-    </>
-  );
+	async function getHashtags() {
+		setLoadingHashtag(true);
+		try {
+			const response = await listHashtags();
+			setHashtagList(response.data);
+			setLoadingHashtag(false);
+		} catch (error) {
+			setLoadingHashtag(false);
+
+			alert(
+				`An error occured while trying to fetch the hashtags, please refresh the page`
+			);
+		}
+	}
+
+	useEffect(() => {
+		getPostsTimeLine();
+		getHashtags();
+	}, []);
+
+	return (
+		<>
+			<TopBar
+				showMenu={showMenu}
+				setShowMenu={setShowMenu}
+				hideMenu={hideMenu}
+			/>
+			<Container onClick={hideMenu}>
+				<ContainerOfViewsInfos>
+					<Title>timeline</Title>
+					<ContainerInfosTimeLine>
+						<ContainerPosts>
+							<NewPost data={getPostsTimeLine} />
+							{loading ? (
+								<ContainerLoading>
+									<Oval
+										height={80}
+										width={80}
+										color="#171717"
+										wrapperStyle={{}}
+										wrapperClass=""
+										visible={true}
+										ariaLabel="oval-loading"
+										secondaryColor="#FFFFFF"
+										strokeWidth={2}
+										strokeWidthSecondary={2}
+									/>
+								</ContainerLoading>
+							) : listOfPosts.length > 0 ? (
+								listOfPosts.map((value, index) => (
+									<PostUser value={value} key={index} />
+								))
+							) : (
+								<TextEmpty>There are no posts yet :(</TextEmpty>
+							)}
+						</ContainerPosts>
+						<HashtagDiv hashtag={hashtagList} loadingHashtag={loadingHashtag} />
+					</ContainerInfosTimeLine>
+				</ContainerOfViewsInfos>
+			</Container>
+		</>
+	);
 }

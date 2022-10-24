@@ -13,17 +13,17 @@ export default function LoginScreen() {
     password: "",
   });
 
+  useEffect(() => {
+    if(localStorage.getItem("linkr") !== null) {
+        navigate("/timeline");
+    }
+  }, []);
+
   function handleForm(event) {
     setForm({
       ...form,
       [event.target.name]: event.target.value,
     });
-
-    useEffect(() => {
-        if(localStorage.getItem("linkr") !== null) {
-            navigate("/timeline");
-        }
-    }, []);
   }
 
   function login(event) {
@@ -54,30 +54,6 @@ export default function LoginScreen() {
             return alert("All fields are required!");
         }
     }
-
-    /*function login(event) {
-        event.preventDefault();
-
-        setDisabled(true);
-
-        postLogin(form)
-            .then(resp => {
-                setDisabled(false);
-                const userInfoJSON = JSON.stringify({ 
-                    userid: resp.data.userid, 
-                    username: resp.data.username, 
-                    pictureurl: resp.data.pictureurl, 
-                    token: resp.data.token 
-                });
-                localStorage.setItem("linkr", userInfoJSON);
-                navigate("/timeline");
-            })
-            .catch(resp => {
-                setDisabled(false);
-                console.error(resp);
-                alert("E-mail or password are invalid!");
-            });
-    }*/
 
     return (
         <Wrapper>
