@@ -18,7 +18,7 @@ function postSignUp(body) {
 }
 
 function getUserPosts(id) {
-	const result = axios.get(`${BASE_URL}/users/${id}`);
+	const result = axios.get(`${DEPLOY_URL}/users/${id}`);
 	return result;
 }
 

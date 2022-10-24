@@ -9,6 +9,7 @@ const NewPost = (props ) => {
   const [textInput, setTextInput] = useState("");
   const [urlInput, setUrlInput] = useState("");
   const [local, setLocal] = useLocalStorage("linkr");
+  const userInfo = JSON.parse(localStorage.getItem("linkr"));
   //const { getPostsTimeLine } = props.data
 
   function click() {
@@ -16,7 +17,6 @@ const NewPost = (props ) => {
     if (urlInput.length === 0) return;
     if (publishing === false) return;
     setPublishing(false);
-    console.log(local.token);
     const headers = { authorization: local.token };
     axios
       .post(
@@ -46,7 +46,7 @@ const NewPost = (props ) => {
   return (
     <Css.NewPost>
       <Css.ProfileLabel>
-        <Css.ProfilePost />
+        <Css.ProfilePost src={userInfo.pictureurl} alt="user-picture" />
       </Css.ProfileLabel>
       <Css.PostLabel>
         <h1>What are you going to share today?</h1>
