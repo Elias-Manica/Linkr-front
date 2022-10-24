@@ -6,6 +6,7 @@ const NewPost = ({ getPostsTimeLine, getHashtags }) => {
 	const [publishing, setPublishing] = useState(true);
 	const [textInput, setTextInput] = useState("");
 	const [urlInput, setUrlInput] = useState("");
+	const userInfo = JSON.parse(localStorage.getItem("linkr"));
 
 	function click() {
 		if (textInput.length === 0) return;
