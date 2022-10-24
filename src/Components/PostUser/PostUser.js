@@ -38,6 +38,8 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
 	const [liked, setLiked] = useState(false);
 	const navigate = useNavigate();
 
+	console.log(Number(value.qtdlikes));
+
 	function goToUserPage() {
 		navigate(`/users/${value.userid}`);
 	}
@@ -46,6 +48,15 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
 		const hashtag = name.substring(1);
 
 		navigate(`/hashtag/${hashtag}`);
+	}
+
+	function userLiked() {
+		const isLiked = value.usersIdLiked.find(
+			(element) => element === userInfo.id
+		);
+		if (isLiked) {
+			setLiked(true);
+		}
 	}
 
 	async function likePost() {
@@ -75,16 +86,17 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
 
 	useEffect(() => {
 		replaceText();
-	}, [replaceText, value.qtdlikes]);
+		userLiked();
+	}, [value]);
 
 	return (
 		<ViewPost key={value.id}>
 			<ContainerUser>
 				<ContainerImage src={value.pictureurl} onClick={() => goToUserPage()} />
-				<ViewIcon liked={liked} onClick={() => likePost()}>
-					{liked ? <IoMdHeart /> : <IoMdHeartEmpty />}
+				<ViewIcon heartColor={liked} onClick={() => likePost()}>
+					{liked == true ? <IoMdHeart /> : <IoMdHeartEmpty />}
 				</ViewIcon>
-				<TextLike>{value.qtdlikes} likes</TextLike>
+				<TextLike>{Number(value.qtdlikes)} likes</TextLike>
 			</ContainerUser>
 			<ContainerInfosPost>
 				<ContainerNameEdit>

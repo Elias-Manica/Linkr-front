@@ -40,7 +40,7 @@ export const ContainerImage = styled.img`
 `;
 
 export const ViewIcon = styled.div`
-	color: ${(props) => (props.liked ? "red" : "white")};
+	color: ${(props) => (props.heartColor ? "red" : "white")};
 	font-size: 27px;
 	cursor: pointer;
 `;
