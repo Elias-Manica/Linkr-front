@@ -1,7 +1,6 @@
 import Css from "./style";
 import React, { useState } from "react";
 import axios from "axios";
-import useLocalStorage from "../../hooks/localStorage";
 
 const NewPost = ({ getPostsTimeLine, getHashtags }) => {
 	const [publishing, setPublishing] = useState(true);
