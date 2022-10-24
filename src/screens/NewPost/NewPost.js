@@ -3,8 +3,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import useLocalStorage from "../../hooks/localStorage";
 
-
-const NewPost = (props ) => {
+const NewPost = ({ getPostsTimeLine, getHashtags }) => {
   const [publishing, setPublishing] = useState(true);
   const [textInput, setTextInput] = useState("");
   const [urlInput, setUrlInput] = useState("");
@@ -24,13 +23,15 @@ const NewPost = (props ) => {
         { text: textInput, link: urlInput },
         { headers }
       )
-      .then( (res) => {
+      .then((res) => {
         setPublishing(true);
         setTextInput("");
         setUrlInput("");
+        getPostsTimeLine();
+        getHashtags();
       })
       .catch((res) => {
-        console.log(res)
+        console.log(res);
         setPublishing(true);
         setTextInput("");
         setUrlInput("");
