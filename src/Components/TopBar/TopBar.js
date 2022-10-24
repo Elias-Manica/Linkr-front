@@ -28,7 +28,7 @@ export default function TopBar({ showMenu, setShowMenu, hideMenu }) {
   return (
     <>
       <Container onClick={hideMenu}>
-        <Logo onClick={() => navigate("/timeline")}>Linkr</Logo>
+        <Logo onClick={() => navigate("/timeline")}>linkr</Logo>
         <ContainerInfosUser onClick={() => setShowMenu(!showMenu)}>
           {showMenu === false ? <IoIosArrowDown /> : <IoIosArrowUp />}
           <ContainerImage src={userInfo.pictureurl} alt="user-picture" />
