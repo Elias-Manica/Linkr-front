@@ -18,7 +18,7 @@ const Css = {
       
     }
   `,
-  ProfilePost: styled.div`
+  ProfilePost: styled.img`
     height: 50px;
     width: 50px;
     background-color: lightgray;

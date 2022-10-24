@@ -28,6 +28,37 @@ async function deletePost(token, id) {
   const promise = await axios.delete(`${BASE_URL}/post/${id}`, config);
   return promise;
 }
+async function insertLikePost(token, postId, userId) {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const promise = await axios.post(
+    `${BASE_URL}/post/like/${postId}`,
+    { userId },
+    config
+  );
+  return promise;
+}
+
+async function removeLikePost(token, postId, userId) {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data: {
+      userId,
+    },
+  };
+
+  const promise = await axios.delete(
+    `${BASE_URL}/post/dislike/${postId}`,
+    config
+  );
+  return promise;
+}
 
 async function updatePost(token, body, id) {
   const config = {
@@ -36,10 +67,16 @@ async function updatePost(token, body, id) {
     },
   };
 
-  const promise = await axios.put(`${LOCAL_HOST}/post/${id}`, body, config);
+  const promise = await axios.put(`${BASE_URL}/post/${id}`, body, config);
   return promise;
 }
 
-//teste
-
-export { listPosts, listHashtags, listOneHashtag, deletePost, updatePost };
+export {
+  listPosts,
+  listHashtags,
+  listOneHashtag,
+  deletePost,
+  insertLikePost,
+  removeLikePost,
+  updatePost,
+};

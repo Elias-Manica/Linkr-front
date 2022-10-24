@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 
-import { IoMdHeartEmpty } from "react-icons/io";
+import { IoMdHeartEmpty, IoMdHeart } from "react-icons/io";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
 
-import { deletePost, updatePost } from "../../services/postService";
+import {
+  deletePost,
+  updatePost,
+  insertLikePost,
+  removeLikePost,
+} from "../../services/postService";
 
 import {
   ContainerDelete,
@@ -14,7 +19,6 @@ import {
   ContainerImage,
   ContainerInfosPost,
   ContainerLink,
-  ContainerLOading,
   ContainerNameEdit,
   ContainerUser,
   DescriptionPost,
@@ -22,6 +26,7 @@ import {
   TextLike,
   ViewIcon,
   ViewPost,
+  ContainerLOading,
 } from "./styles";
 
 import Microlink from "@microlink/react";
@@ -38,6 +43,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
   const [edit, setEdit] = useState(false);
   const [putDescription, setPutDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  const [liked, setLiked] = useState(false);
   const navigate = useNavigate();
 
   const inputRef = useRef(null);
@@ -79,6 +85,16 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
     navigate(`/hashtag/${hashtag}`);
   }
 
+  async function likePost() {
+    if (liked) {
+      await removeLikePost(userInfo.token, value.id, userInfo.id);
+      setLiked(false);
+    } else {
+      await insertLikePost(userInfo.token, value.id, userInfo.id);
+      setLiked(true);
+    }
+  }
+
   const replaceText = useCallback(async () => {
     const textSepareted = value.text.split(" ");
 
@@ -107,8 +123,8 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
     <ViewPost key={value.id}>
       <ContainerUser>
         <ContainerImage src={value.pictureurl} onClick={() => goToUserPage()} />
-        <ViewIcon>
-          <IoMdHeartEmpty />
+        <ViewIcon liked={liked} onClick={() => likePost()}>
+          {liked ? <IoMdHeart /> : <IoMdHeartEmpty />}
         </ViewIcon>
         <TextLike>{value.qtdlikes} likes</TextLike>
       </ContainerUser>

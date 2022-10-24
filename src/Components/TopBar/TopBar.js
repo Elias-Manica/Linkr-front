@@ -8,7 +8,7 @@ import {
 } from "./styles";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { postLogout, searchUsers } from "../../services/linkrService";
 import { DebounceInput } from "react-debounce-input";
 import UserSearchInfo from "../UserSearchInfo/UserSearchInfo";
@@ -33,7 +33,8 @@ export default function TopBar({ showMenu, setShowMenu, hideMenu }) {
 				navigate("/");
 			})
 			.catch(() => {
-				alert("Error!");
+				localStorage.removeItem("linkr");
+				navigate("/");
 			});
 	}
 	async function getSearchResult(searchValue) {
@@ -63,35 +64,39 @@ export default function TopBar({ showMenu, setShowMenu, hideMenu }) {
 		}
 		getSearchResult(searchValue);
 	}
-
-	return (
-		<>
-			<Container onClick={hideMenu}>
-				<Logo onClick={() => navigate("/timeline")}>linkr</Logo>
-				<SearchArea>
-					<DebounceInput
-						type="text"
-						value={searchValue}
-						className="searchBar"
-						placeholder="Search for people"
-						minLength={2}
-						debounceTimeout={300}
-						onChange={(e) => handleDebounce(e)}
-					/>
-					<div className={searchClass}>
-						{searchResult.map((user, index) => {
-							return <UserSearchInfo user={user} key={index} />;
-						})}
-					</div>
-				</SearchArea>
-				<ContainerInfosUser onClick={() => setShowMenu(!showMenu)}>
-					{showMenu === false ? <IoIosArrowDown /> : <IoIosArrowUp />}
-					<ContainerImage src={userInfo.pictureurl} alt="user-picture" />
-				</ContainerInfosUser>
-				<Menu onClick={userLogout} showMenu={showMenu}>
-					Logout
-				</Menu>
-			</Container>
-		</>
-	);
+	
+	if(userInfo) {
+		return (
+			<>
+				<Container onClick={hideMenu}>
+					<Logo onClick={() => navigate("/timeline")}>linkr</Logo>
+					<SearchArea>
+						<DebounceInput
+							type="text"
+							value={searchValue}
+							className="searchBar"
+							placeholder="Search for people"
+							minLength={2}
+							debounceTimeout={300}
+							onChange={(e) => handleDebounce(e)}
+						/>
+						<div className={searchClass}>
+							{searchResult.map((user, index) => {
+								return <UserSearchInfo user={user} key={index} />;
+							})}
+						</div>
+					</SearchArea>
+					<ContainerInfosUser onClick={() => setShowMenu(!showMenu)}>
+						{showMenu === false ? <IoIosArrowDown /> : <IoIosArrowUp />}
+						<ContainerImage src={userInfo.pictureurl} alt="user-picture" />
+					</ContainerInfosUser>
+					<Menu onClick={userLogout} showMenu={showMenu}>
+						Logout
+					</Menu>
+				</Container>
+			</>
+		);
+	} else {
+		return <Navigate to="/" />
+	}
 }
