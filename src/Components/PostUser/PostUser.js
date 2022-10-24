@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import { IoMdHeartEmpty } from "react-icons/io";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
@@ -26,9 +26,29 @@ import Microlink from "@microlink/react";
 
 import ModalDelete from "../ModalDelete/ModalDelete";
 
-export default function PostUser({ value, getPostsTimeLine }) {
+export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
   const userInfo = JSON.parse(localStorage.getItem("linkr"));
   const [isOpen, setIsOpen] = useState(false);
+  const [description, setDescription] = useState("");
+
+  const replaceText = useCallback(async () => {
+    const textSepareted = value.text.split(" ");
+
+    if (value.hashtags[0] !== null) {
+      let index = 0;
+      for (let i = 0; i < textSepareted.length; i++) {
+        if (textSepareted[i] === "$#") {
+          textSepareted[i] = `#${value.hashtags[index]}`;
+          index++;
+        }
+      }
+    }
+    setDescription(textSepareted.join(" "));
+  }, [value.hashtags, value.text]);
+
+  useEffect(() => {
+    replaceText();
+  }, [replaceText]);
 
   return (
     <ViewPost key={value.id}>
@@ -52,12 +72,7 @@ export default function PostUser({ value, getPostsTimeLine }) {
           </ContainerIconEdit>
         </ContainerNameEdit>
         <ContainerDescription>
-          <DescriptionPost>
-            {value.text}{" "}
-            {value.hashtags[0] === null
-              ? null
-              : value.hashtags.map((item) => `#${item} `)}
-          </DescriptionPost>
+          <DescriptionPost>{description}</DescriptionPost>
           <ContainerLink>
             <Microlink url={value.link} />
           </ContainerLink>
@@ -68,6 +83,7 @@ export default function PostUser({ value, getPostsTimeLine }) {
         setIsOpen={setIsOpen}
         postId={value.id}
         getPostsTimeLine={getPostsTimeLine}
+        getHashtags={getHashtags}
       />
     </ViewPost>
   );

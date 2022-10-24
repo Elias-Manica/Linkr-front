@@ -18,6 +18,7 @@ export default function ModalDelete({
   setIsOpen,
   postId,
   getPostsTimeLine,
+  getHashtags,
 }) {
   const userInfo = JSON.parse(localStorage.getItem("linkr"));
   const [loading, setLoading] = useState(false);
@@ -34,10 +35,12 @@ export default function ModalDelete({
       setLoading(false);
       setIsOpen(false);
       getPostsTimeLine();
+      getHashtags();
     } catch (error) {
       alert(`You cannot delete this post!`);
       setLoading(false);
       setIsOpen(false);
+      console.log(error);
     }
   }
 

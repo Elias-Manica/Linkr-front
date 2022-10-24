@@ -80,7 +80,10 @@ export default function TimelineScreen() {
           <Title>timeline</Title>
           <ContainerInfosTimeLine>
             <ContainerPosts>
-              <NewPost getPostsTimeLine={getPostsTimeLine} />
+              <NewPost
+                getPostsTimeLine={getPostsTimeLine}
+                getHashtags={getHashtags}
+              />
               {loading ? (
                 <ContainerLoading>
                   <Oval
@@ -102,6 +105,7 @@ export default function TimelineScreen() {
                     value={value}
                     key={index}
                     getPostsTimeLine={getPostsTimeLine}
+                    getHashtags={getHashtags}
                   />
                 ))
               ) : (
