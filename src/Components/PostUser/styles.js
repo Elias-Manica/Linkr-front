@@ -81,7 +81,13 @@ export const ContainerIconEdit = styled.div`
 
 export const ContainerEdit = styled.button`
   margin-right: 10px;
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
   cursor: pointer;
+  outline: inherit;
 `;
 
 export const ContainerDelete = styled.div`

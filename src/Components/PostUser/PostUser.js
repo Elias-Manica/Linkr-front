@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 
 import { IoMdHeartEmpty } from "react-icons/io";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
@@ -39,6 +39,10 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
   const [putDescription, setPutDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const inputRef = useRef(null);
+
+  console.log(value, " value");
 
   async function editPost(token, id) {
     setLoading(true);
@@ -93,7 +97,11 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
 
   useEffect(() => {
     replaceText();
-  }, [replaceText]);
+
+    if (edit) {
+      inputRef.current.focus();
+    }
+  }, [replaceText, edit]);
 
   return (
     <ViewPost key={value.id}>
@@ -108,14 +116,16 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
         <form>
           <ContainerNameEdit>
             <NameUser onClick={() => goToUserPage()}>{value.username}</NameUser>
-            <ContainerIconEdit>
-              <ContainerEdit onClick={(e) => openTextEdit(e)}>
-                <HiOutlinePencilSquare />
-              </ContainerEdit>
-              <ContainerDelete onClick={() => setIsOpen(!isOpen)}>
-                <HiOutlineTrash />
-              </ContainerDelete>
-            </ContainerIconEdit>
+            {userInfo.userid === value.userid ? (
+              <ContainerIconEdit>
+                <ContainerEdit onClick={(e) => openTextEdit(e)}>
+                  <HiOutlinePencilSquare />
+                </ContainerEdit>
+                <ContainerDelete onClick={() => setIsOpen(!isOpen)}>
+                  <HiOutlineTrash />
+                </ContainerDelete>
+              </ContainerIconEdit>
+            ) : null}
           </ContainerNameEdit>
           <ContainerDescription>
             {loading ? (
@@ -137,6 +147,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
               <ContainerEditInput
                 value={putDescription}
                 onChange={(e) => setPutDescription(e.target.value)}
+                ref={inputRef}
               />
             ) : (
               <ReactTagify
