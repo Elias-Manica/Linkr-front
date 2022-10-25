@@ -9,6 +9,7 @@ import {
 	updatePost,
 	insertLikePost,
 	removeLikePost,
+	insertCommentIntoPost,
 } from "../../services/postService";
 
 import {
@@ -46,6 +47,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
 	const [putDescription, setPutDescription] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [liked, setLiked] = useState(false);
+	const [commentText, setCommentText] = useState("");
 	const navigate = useNavigate();
 
 	const inputRef = useRef(null);
@@ -85,6 +87,15 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
 		const hashtag = name.substring(1);
 
 		navigate(`/hashtag/${hashtag}`);
+	}
+
+	async function commentPost(e) {
+		e.preventDefault();
+		await insertCommentIntoPost(value.id, userInfo.token, commentText);
+	}
+
+	function handleInput(e) {
+		setCommentText(e.target.value);
 	}
 
 	async function likePost() {
@@ -202,9 +213,13 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
 			</ViewPost>
 			<CommentsContainer>
 				<img src={value.pictureurl} alt="" />
-				<form>
-					<input type="text" placeholder="write a comment..." />
-					<button>
+				<form onSubmit={commentPost}>
+					<input
+						type="text"
+						placeholder="write a comment..."
+						onChange={handleInput}
+					/>
+					<button type="submit">
 						<TbSend />
 					</button>
 				</form>

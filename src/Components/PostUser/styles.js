@@ -202,4 +202,8 @@ export const CommentsContainer = styled.div`
 		color: #f3f3f3;
 		font-size: 20px;
 	}
+
+	button:hover {
+		cursor: pointer;
+	}
 `;
