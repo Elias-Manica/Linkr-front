@@ -78,7 +78,7 @@ async function insertCommentIntoPost(postId, token, description) {
 		},
 	};
 	const promise = await axios.post(
-		`${LOCAL_HOST}/post/comment/${postId}`,
+		`${BASE_URL}/post/comment/${postId}`,
 		{ description },
 		config
 	);
