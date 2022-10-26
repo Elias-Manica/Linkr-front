@@ -56,8 +56,6 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
 
   const inputRef = useRef(null);
 
-  console.log(value, " value");
-
   async function editPost(token, id) {
     setLoading(true);
     const body = {
