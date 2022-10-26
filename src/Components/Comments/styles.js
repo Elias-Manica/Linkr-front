@@ -144,3 +144,10 @@ export const Line = styled.div`
   margin-right: auto;
   margin-bottom: 25px;
 `;
+
+export const ContainerLoading = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+`;

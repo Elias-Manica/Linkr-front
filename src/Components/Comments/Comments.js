@@ -20,10 +20,14 @@ import { insertCommentIntoPost } from "../../services/postService";
 
 import { TbSend } from "react-icons/tb";
 
+import { Oval } from "react-loader-spinner";
+import { ContainerLOading } from "../PostUser/styles";
+
 export default function Comments({ value }) {
   const userInfo = JSON.parse(localStorage.getItem("linkr"));
   const [commentText, setCommentText] = useState("");
   const [listAllComment, setListAllComment] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   async function commentPost(e) {
     e.preventDefault();
@@ -35,11 +39,14 @@ export default function Comments({ value }) {
   }
 
   async function listComment() {
+    setLoading(true);
     try {
       const response = await getComments(value.id);
       setListAllComment(response.data);
       console.log(response.data);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       alert(
         `An error occured while trying to fetch the comments, please refresh the page`
       );
@@ -54,26 +61,41 @@ export default function Comments({ value }) {
     <>
       <Container>
         <ContainerSeeCOmments>
-          {listAllComment.length > 0
-            ? listAllComment.map((value) => (
-                <>
-                  <ContainerComment>
-                    <ContainerImage src={value.urluser} />
-                    <ViewDescriptionComment>
-                      <ContainerName>
-                        <NameUser>{value.username}</NameUser>
-                        <StatusUser>
-                          {value.follow ? "• following" : null}
-                          {value.owner ? "• post’s author" : null}
-                        </StatusUser>
-                      </ContainerName>
-                      <DescriptionPost>{value.comment}</DescriptionPost>
-                    </ViewDescriptionComment>
-                  </ContainerComment>
-                  <Line />
-                </>
-              ))
-            : null}
+          {loading ? (
+            <ContainerLOading>
+              <Oval
+                height={80}
+                width={80}
+                color="#171717"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+                ariaLabel="oval-loading"
+                secondaryColor="#FFFFFF"
+                strokeWidth={2}
+                strokeWidthSecondary={2}
+              />
+            </ContainerLOading>
+          ) : (
+            listAllComment.map((value) => (
+              <>
+                <ContainerComment>
+                  <ContainerImage src={value.urluser} />
+                  <ViewDescriptionComment>
+                    <ContainerName>
+                      <NameUser>{value.username}</NameUser>
+                      <StatusUser>
+                        {value.follow ? "• following" : null}
+                        {value.owner ? "• post’s author" : null}
+                      </StatusUser>
+                    </ContainerName>
+                    <DescriptionPost>{value.comment}</DescriptionPost>
+                  </ViewDescriptionComment>
+                </ContainerComment>
+                <Line />
+              </>
+            ))
+          )}
         </ContainerSeeCOmments>
         <CommentsContainer>
           <img src={value.pictureurl} alt="" />

@@ -86,7 +86,7 @@ async function insertCommentIntoPost(postId, token, description) {
 }
 
 async function getComments(postid) {
-  const promise = await axios.get(`${LOCAL_HOST}/post/comment/${postid}`);
+  const promise = await axios.get(`${BASE_URL}/post/comment/${postid}`);
   return promise;
 }
 
