@@ -27,6 +27,9 @@ export const ContainerInfosPost = styled.div`
 
   padding-top: 10px;
   margin-right: 15px;
+  @media (max-width: 935px) {
+    width: 70%;
+  }
 `;
 
 export const ContainerImage = styled.img`

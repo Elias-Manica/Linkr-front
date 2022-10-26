@@ -18,8 +18,8 @@ function postSignUp(body) {
 }
 
 function getUserPosts(id) {
-	const result = axios.get(`${DEPLOY_URL}/users/${id}`);
-	return result;
+  const result = axios.get(`${DEPLOY_URL}/users/${id}`);
+  return result;
 }
 
 function searchUsers(text) {

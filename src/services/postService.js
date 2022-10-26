@@ -85,6 +85,11 @@ async function insertCommentIntoPost(postId, token, description) {
   return promise;
 }
 
+async function getComments(postid) {
+  const promise = await axios.get(`${LOCAL_HOST}/post/comment/${postid}`);
+  return promise;
+}
+
 export {
   listPosts,
   listHashtags,
@@ -94,4 +99,5 @@ export {
   removeLikePost,
   updatePost,
   insertCommentIntoPost,
+  getComments,
 };

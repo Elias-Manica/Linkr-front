@@ -40,6 +40,7 @@ import ModalDelete from "../ModalDelete/ModalDelete";
 import { ReactTagify } from "react-tagify";
 
 import { Oval } from "react-loader-spinner";
+import Comments from "../Comments/Comments";
 
 export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
   const userInfo = JSON.parse(localStorage.getItem("linkr"));
@@ -50,6 +51,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
   const [loading, setLoading] = useState(false);
   const [liked, setLiked] = useState(false);
   const [commentText, setCommentText] = useState("");
+  const [seeComment, setSeeComment] = useState(false);
   const navigate = useNavigate();
 
   const inputRef = useRef(null);
@@ -146,7 +148,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
             {liked ? <IoMdHeart /> : <IoMdHeartEmpty />}
           </ViewIcon>
           <TextLike>{value.qtdlikes} likes</TextLike>
-          <ViewIconComment>
+          <ViewIconComment onClick={() => setSeeComment(!seeComment)}>
             <AiOutlineComment />
           </ViewIconComment>
           <TextLike>{value.qtdcomments} comments</TextLike>
@@ -217,19 +219,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
           getHashtags={getHashtags}
         />
       </ViewPost>
-      <CommentsContainer>
-        <img src={value.pictureurl} alt="" />
-        <form onSubmit={commentPost}>
-          <input
-            type="text"
-            placeholder="write a comment..."
-            onChange={handleInput}
-          />
-          <button type="submit">
-            <TbSend />
-          </button>
-        </form>
-      </CommentsContainer>
+      {seeComment ? <Comments value={value} /> : null}
     </>
   );
 }
