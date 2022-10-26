@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { DebounceInput } from "react-debounce-input";
-import ButtonFollow from "../../Components/ButtonFollow/ButtonFollow";
+import ButtonFollow from "../ButtonFollow.js/ButtonFollow";
 import axios from "axios";
 import {
 	Container,
@@ -19,9 +19,12 @@ import { listHashtags } from "../../services/postService.js";
 import { Oval } from "react-loader-spinner";
 import HashtagDiv from "../../Components/HashtagDiv/HashtagDiv.js";
 import { TitleImg } from "./styles.js";
+import Css from "../NewPost/style";
+import CssButton from "../ButtonFollow.js/styles";
 
 export default function UserPostsScreen() {
-	const { id } = useParams();
+	const { id } = useParams(); //id da tela que a gente vê
+	const userInfo = JSON.parse(localStorage.getItem("linkr"));
 	const [username, setUsername] = useState("");
 	const [profileUrl, setProfileUrl] = useState("");
 	const [userPosts, setUserPosts] = useState([]);
@@ -79,11 +82,14 @@ export default function UserPostsScreen() {
 			/>
 			<Container>
 				<ContainerOfViewsInfos>
+					<CssButton.HeaderScreen>
 					<Title>
 						<TitleImg src={profileUrl} alt="" />
 						{username}
 					</Title>
-					<ButtonFollow />
+					<ButtonFollow userInfo={userInfo} id={id}/>
+					</CssButton.HeaderScreen>
+					
 					<ContainerInfosTimeLine>
 						<ContainerPosts>
 							{loading === true ? (
