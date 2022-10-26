@@ -32,7 +32,7 @@ export default function UserPostsScreen() {
 	const [loadingHashtag, setLoadingHashtag] = useState(false);
 	const [hashtagList, setHashtagList] = useState([]);
 	const [showMenu, setShowMenu] = useState(false);
-
+	console.log(userInfo.userid, id)
 	function hideMenu() {
 		if (showMenu) {
 			setShowMenu(false);
@@ -87,7 +87,8 @@ export default function UserPostsScreen() {
 						<TitleImg src={profileUrl} alt="" />
 						{username}
 					</Title>
-					<ButtonFollow userInfo={userInfo} id={id}/>
+					{Number(userInfo.userid)===Number(id) ? null : <ButtonFollow userInfo={userInfo} id={id}/>
+}						
 					</CssButton.HeaderScreen>
 					
 					<ContainerInfosTimeLine>
