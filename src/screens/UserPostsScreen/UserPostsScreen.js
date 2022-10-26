@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { DebounceInput } from "react-debounce-input";
+import ButtonFollow from "../../Components/ButtonFollow/ButtonFollow";
 import axios from "axios";
 import {
 	Container,
@@ -82,6 +83,7 @@ export default function UserPostsScreen() {
 						<TitleImg src={profileUrl} alt="" />
 						{username}
 					</Title>
+					<ButtonFollow />
 					<ContainerInfosTimeLine>
 						<ContainerPosts>
 							{loading === true ? (
