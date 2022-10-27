@@ -119,6 +119,9 @@ export default function TimelineScreen() {
 		try {
 			const result = (await getFollowingList(userInfo.token)).data;
 			setFollowingUsers(result);
+			if (result.length === 0) {
+				setLoading(false);
+			}
 		} catch (error) {
 			console.log(error);
 		}
@@ -161,20 +164,22 @@ export default function TimelineScreen() {
 								next={fetchData}
 								hasMore={hasMore}
 								loader={
-									<ContainerLoading>
-										<Oval
-											height={80}
-											width={80}
-											color="#171717"
-											wrapperStyle={{}}
-											wrapperClass=""
-											visible={true}
-											ariaLabel="oval-loading"
-											secondaryColor="#FFFFFF"
-											strokeWidth={2}
-											strokeWidthSecondary={2}
-										/>
-									</ContainerLoading>
+									followingUsers.length === 0 ? null : (
+										<ContainerLoading>
+											<Oval
+												height={80}
+												width={80}
+												color="#171717"
+												wrapperStyle={{}}
+												wrapperClass=""
+												visible={true}
+												ariaLabel="oval-loading"
+												secondaryColor="#FFFFFF"
+												strokeWidth={2}
+												strokeWidthSecondary={2}
+											/>
+										</ContainerLoading>
+									)
 								}
 								endMessage={<TextEmpty>Yay! You have seen it all</TextEmpty>}
 							>
@@ -193,17 +198,23 @@ export default function TimelineScreen() {
 											strokeWidthSecondary={2}
 										/>
 									</ContainerLoading>
-								) : listOfPosts.length > 0 ? (
-									listOfPosts.map((value, index) => (
-										<PostUser
-											value={value}
-											key={index}
-											getPostsTimeLine={getPostsTimeLine}
-											getHashtags={getHashtags}
-										/>
-									))
+								) : followingUsers.length > 0 ? (
+									listOfPosts.length > 0 ? (
+										listOfPosts.map((value, index) => (
+											<PostUser
+												value={value}
+												key={index}
+												getPostsTimeLine={getPostsTimeLine}
+												getHashtags={getHashtags}
+											/>
+										))
+									) : (
+										<TextEmpty>No post found from your friends</TextEmpty>
+									)
 								) : (
-									<TextEmpty>There are no posts yet :(</TextEmpty>
+									<TextEmpty>
+										You don't follow anyone yet. Search for new friends!
+									</TextEmpty>
 								)}
 							</InfiniteScroll>
 						</ContainerPosts>
