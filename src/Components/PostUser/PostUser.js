@@ -93,10 +93,10 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
 
   async function likePost() {
     if (liked) {
-      await removeLikePost(userInfo.token, value.id, userInfo.id);
+      await removeLikePost(userInfo.token, value.id);
       setLiked(false);
     } else {
-      await insertLikePost(userInfo.token, value.id, userInfo.id);
+      await insertLikePost(userInfo.token, value.id);
       setLiked(true);
     }
   }
