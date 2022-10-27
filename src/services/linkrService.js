@@ -44,7 +44,7 @@ async function verifyFollow(token, id) {
 			Authorization: `Bearer ${token}`,
 		},
 	};
-	const promise = await axios.get(`${BASE_URL}/follow/${id}`, config);
+	const promise = await axios.get(`${DEPLOY_URL}/follow/${id}`, config);
 	return promise;
 }
 async function followingUser(token, id) {
@@ -53,7 +53,7 @@ async function followingUser(token, id) {
 			Authorization: `Bearer ${token}`,
 		},
 	};
-	const promise = await axios.post(`${BASE_URL}/follow/${id}`, {}, config);
+	const promise = await axios.post(`${DEPLOY_URL}/follow/${id}`, {}, config);
 	return promise;
 }
 
@@ -63,7 +63,7 @@ async function unfollowing(token, id) {
 			Authorization: `Bearer ${token}`,
 		},
 	};
-	const promise = await axios.post(`${BASE_URL}/unfollow/${id}`, {}, config);
+	const promise = await axios.post(`${DEPLOY_URL}/unfollow/${id}`, {}, config);
 	return promise;
 }
 
@@ -73,7 +73,7 @@ async function getFollowingList(token) {
 			Authorization: `Bearer ${token}`,
 		},
 	};
-	const promise = await axios.get(`${BASE_URL}/users/get/following`, config);
+	const promise = await axios.get(`${DEPLOY_URL}/users/get/following`, config);
 	return promise;
 }
 
