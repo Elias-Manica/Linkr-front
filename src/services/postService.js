@@ -4,7 +4,7 @@ const BASE_URL = "https://back-projetao-linkr-aefj.herokuapp.com";
 const LOCAL_HOST = "http://localhost:4000";
 
 async function listPosts(page) {
-  const promise = await axios.get(`${LOCAL_HOST}/timeline?page=${page}`);
+  const promise = await axios.get(`${BASE_URL}/timeline?page=${page}`);
   return promise;
 }
 
