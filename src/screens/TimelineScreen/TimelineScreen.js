@@ -1,28 +1,30 @@
 import React, { useState, useEffect } from "react";
 
-import Microlink from "@microlink/react";
+import InfiniteScroll from "react-infinite-scroll-component";
+
+import useInterval from "use-interval";
 import { Oval } from "react-loader-spinner";
 
 import { listPosts, listHashtags } from "../../services/postService";
-import useLocalStorage from "../../hooks/localStorage";
+
 import {
   Container,
-  ContainerCreatePost,
   ContainerInfosTimeLine,
   ContainerLoading,
   ContainerOfViewsInfos,
   ContainerPosts,
+  ContainerRefresh,
   TextEmpty,
   Title,
 } from "./styles";
 
 import TopBar from "../../Components/TopBar/TopBar";
 
-import { IoMdHeartEmpty } from "react-icons/io";
-import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
 import PostUser from "../../Components/PostUser/PostUser";
 import HashtagDiv from "../../Components/HashtagDiv/HashtagDiv";
 import NewPost from "../NewPost/NewPost";
+
+import { FiRefreshCcw } from "react-icons/fi";
 
 export default function TimelineScreen() {
   const [listOfPosts, setListOfPosts] = useState([]);
@@ -30,6 +32,10 @@ export default function TimelineScreen() {
   const [loadingHashtag, setLoadingHashtag] = useState(false);
   const [hashtagList, setHashtagList] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
+  const [hasNewPost, setHasNewPost] = useState(false);
+  const [qtdNewPost, setQtdNewPost] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
 
   function hideMenu() {
     if (showMenu) {
@@ -37,10 +43,30 @@ export default function TimelineScreen() {
     }
   }
 
-  async function getPostsTimeLine() {
-    setLoading(true);
+  const fetchData = async () => {
+    const response = await getMorePosts();
+
+    setListOfPosts([...listOfPosts, ...response]);
+
+    if (response.length === 0 || response.length < 10) {
+      setHasMore(false);
+    }
+
+    setPage(page + 1);
+  };
+
+  async function getMorePosts() {
     try {
-      const response = await listPosts();
+      const response = await listPosts(page);
+      return response.data;
+    } catch (error) {}
+  }
+
+  async function getPostsTimeLine(page) {
+    setLoading(true);
+    setHasNewPost(false);
+    try {
+      const response = await listPosts(page);
       setListOfPosts(response.data);
       setLoading(false);
     } catch (error) {
@@ -67,10 +93,32 @@ export default function TimelineScreen() {
     }
   }
 
+  async function hasNewPostFunction() {
+    try {
+      const response = await listPosts(0);
+
+      if (response.data[0].id !== listOfPosts[0].id) {
+        setHasNewPost(true);
+
+        const idToFind = listOfPosts[0].id;
+
+        response.data.map((value, index) => {
+          if (Number(value.id) === Number(idToFind)) {
+            setQtdNewPost(index);
+          }
+        });
+      }
+    } catch (error) {}
+  }
+
   useEffect(() => {
-    getPostsTimeLine();
+    getPostsTimeLine(0);
     getHashtags();
   }, []);
+
+  useInterval(() => {
+    hasNewPostFunction();
+  }, 15000);
 
   return (
     <>
@@ -88,33 +136,62 @@ export default function TimelineScreen() {
                 getPostsTimeLine={getPostsTimeLine}
                 getHashtags={getHashtags}
               />
-              {loading ? (
-                <ContainerLoading>
-                  <Oval
-                    height={80}
-                    width={80}
-                    color="#171717"
-                    wrapperStyle={{}}
-                    wrapperClass=""
-                    visible={true}
-                    ariaLabel="oval-loading"
-                    secondaryColor="#FFFFFF"
-                    strokeWidth={2}
-                    strokeWidthSecondary={2}
-                  />
-                </ContainerLoading>
-              ) : listOfPosts.length > 0 ? (
-                listOfPosts.map((value, index) => (
-                  <PostUser
-                    value={value}
-                    key={index}
-                    getPostsTimeLine={getPostsTimeLine}
-                    getHashtags={getHashtags}
-                  />
-                ))
-              ) : (
-                <TextEmpty>There are no posts yet :(</TextEmpty>
-              )}
+              {hasNewPost ? (
+                <ContainerRefresh onClick={() => getPostsTimeLine(0)}>
+                  <p>{qtdNewPost} new posts, load more!</p>
+                  <FiRefreshCcw />
+                </ContainerRefresh>
+              ) : null}
+              <InfiniteScroll
+                dataLength={listOfPosts.length} //This is important field to render the next data
+                next={fetchData}
+                hasMore={hasMore}
+                loader={
+                  <ContainerLoading>
+                    <Oval
+                      height={80}
+                      width={80}
+                      color="#171717"
+                      wrapperStyle={{}}
+                      wrapperClass=""
+                      visible={true}
+                      ariaLabel="oval-loading"
+                      secondaryColor="#FFFFFF"
+                      strokeWidth={2}
+                      strokeWidthSecondary={2}
+                    />
+                  </ContainerLoading>
+                }
+                endMessage={<TextEmpty>Yay! You have seen it all</TextEmpty>}
+              >
+                {loading ? (
+                  <ContainerLoading>
+                    <Oval
+                      height={80}
+                      width={80}
+                      color="#171717"
+                      wrapperStyle={{}}
+                      wrapperClass=""
+                      visible={true}
+                      ariaLabel="oval-loading"
+                      secondaryColor="#FFFFFF"
+                      strokeWidth={2}
+                      strokeWidthSecondary={2}
+                    />
+                  </ContainerLoading>
+                ) : listOfPosts.length > 0 ? (
+                  listOfPosts.map((value, index) => (
+                    <PostUser
+                      value={value}
+                      key={index}
+                      getPostsTimeLine={getPostsTimeLine}
+                      getHashtags={getHashtags}
+                    />
+                  ))
+                ) : (
+                  <TextEmpty>There are no posts yet :(</TextEmpty>
+                )}
+              </InfiniteScroll>
             </ContainerPosts>
             <HashtagDiv hashtag={hashtagList} loadingHashtag={loadingHashtag} />
           </ContainerInfosTimeLine>
