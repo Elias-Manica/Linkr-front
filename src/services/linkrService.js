@@ -38,4 +38,34 @@ function postLogout(token) {
   return promise;
 }
 
-export { postSignUp, postLogin, postLogout, searchUsers, getUserPosts };
+async function verifyFollow(token ,id){
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const promise = await axios.get(`${BASE_URL}/follow/${id}`,config);
+  return promise;
+}
+async function followingUser(token, id){
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const promise = await axios.post(`${BASE_URL}/follow/${id}`,{},config);
+  return promise;
+}
+
+async function unfollowing(token, id){
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const promise = await axios.post(`${BASE_URL}/unfollow/${id}`,{},config);
+  return promise;
+}
+
+export { postSignUp, postLogin, postLogout, searchUsers, getUserPosts, verifyFollow, followingUser, unfollowing };

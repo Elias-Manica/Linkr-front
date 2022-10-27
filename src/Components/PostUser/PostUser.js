@@ -91,15 +91,6 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
     navigate(`/hashtag/${hashtag}`);
   }
 
-  async function commentPost(e) {
-    e.preventDefault();
-    await insertCommentIntoPost(value.id, userInfo.token, commentText);
-  }
-
-  function handleInput(e) {
-    setCommentText(e.target.value);
-  }
-
   async function likePost() {
     if (liked) {
       await removeLikePost(userInfo.token, value.id, userInfo.id);
