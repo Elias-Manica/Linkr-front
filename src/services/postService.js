@@ -4,17 +4,17 @@ const BASE_URL = "https://back-projetao-linkr-aefj.herokuapp.com";
 const LOCAL_HOST = "http://localhost:4000";
 
 async function listPosts() {
-  const promise = await axios.get(`${BASE_URL}/timeline`);
+  const promise = await axios.get(`${LOCAL_HOST}/timeline`);
   return promise;
 }
 
 async function listHashtags() {
-  const promise = await axios.get(`${BASE_URL}/hashtag`);
+  const promise = await axios.get(`${LOCAL_HOST}/hashtag`);
   return promise;
 }
 
 async function listOneHashtag(hashtag) {
-  const promise = await axios.get(`${BASE_URL}/hashtag/${hashtag}`);
+  const promise = await axios.get(`${LOCAL_HOST}/hashtag/${hashtag}`);
   return promise;
 }
 
@@ -25,9 +25,21 @@ async function deletePost(token, id) {
     },
   };
 
-  const promise = await axios.delete(`${BASE_URL}/post/${id}`, config);
+  const promise = await axios.delete(`${LOCAL_HOST}/post/${id}`, config);
   return promise;
 }
+
+async function rePost(token, id) {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+  };
+
+  const promise = axios.post(`${LOCAL_HOST}/post/${id}`, {}, config);
+  return promise;
+}
+
 async function insertLikePost(token, postId, userId) {
   const config = {
     headers: {
@@ -36,7 +48,7 @@ async function insertLikePost(token, postId, userId) {
   };
 
   const promise = await axios.post(
-    `${BASE_URL}/post/like/${postId}`,
+    `${LOCAL_HOST}/post/like/${postId}`,
     { userId },
     config
   );
@@ -54,7 +66,7 @@ async function removeLikePost(token, postId, userId) {
   };
 
   const promise = await axios.delete(
-    `${BASE_URL}/post/dislike/${postId}`,
+    `${LOCAL_HOST}/post/dislike/${postId}`,
     config
   );
   return promise;
@@ -67,7 +79,7 @@ async function updatePost(token, body, id) {
     },
   };
 
-  const promise = await axios.put(`${BASE_URL}/post/${id}`, body, config);
+  const promise = await axios.put(`${LOCAL_HOST}/post/${id}`, body, config);
   return promise;
 }
 
@@ -78,7 +90,7 @@ async function insertCommentIntoPost(postId, token, description) {
     },
   };
   const promise = await axios.post(
-    `${BASE_URL}/post/comment/${postId}`,
+    `${LOCAL_HOST}/post/comment/${postId}`,
     { description },
     config
   );
@@ -86,7 +98,7 @@ async function insertCommentIntoPost(postId, token, description) {
 }
 
 async function getComments(postid) {
-  const promise = await axios.get(`${BASE_URL}/post/comment/${postid}`);
+  const promise = await axios.get(`${LOCAL_HOST}/post/comment/${postid}`);
   return promise;
 }
 
@@ -94,7 +106,8 @@ export {
   listPosts,
   listHashtags,
   listOneHashtag,
-  deletePost,
+  deletePost, 
+  rePost, 
   insertLikePost,
   removeLikePost,
   updatePost,

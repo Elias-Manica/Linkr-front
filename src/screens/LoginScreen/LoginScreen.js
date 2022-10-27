@@ -2,11 +2,9 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { postLogin } from "../../services/linkrService";
 import { Button, Form, LeftContainer, RightContainer, Wrapper } from "./styles";
-// import useLocalStorage from "../../hooks/localStorage";
 
 export default function LoginScreen() {
 	const navigate = useNavigate();
-	// const [local, setLocal] = useLocalStorage("linkr");
 	const [disabled, setDisabled] = useState(false);
 	const [form, setForm] = useState({
 		email: "",
@@ -34,12 +32,6 @@ export default function LoginScreen() {
 		postLogin(form)
 			.then((resp) => {
 				setDisabled(false);
-				// setLocal({
-				//   userid: resp.data.userid,
-				//   username: resp.data.username,
-				//   pictureurl: resp.data.pictureurl,
-				//   token: resp.data.token,
-				// });
 				const userInfoJSON = JSON.stringify({
 					userid: resp.data.userid,
 					username: resp.data.username,

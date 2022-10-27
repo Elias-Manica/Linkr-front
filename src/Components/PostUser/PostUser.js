@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 
-import { IoMdHeartEmpty, IoMdHeart } from "react-icons/io";
+import { IoMdHeartEmpty, IoMdHeart} from "react-icons/io";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
 import { TbSend } from "react-icons/tb";
 import { AiOutlineComment } from "react-icons/ai";
+import { BiRepost } from "react-icons/bi";
 
 import {
   deletePost,
@@ -32,11 +33,13 @@ import {
   ContainerLOading,
   CommentsContainer,
   ViewIconComment,
+  ViewIconRepost,
 } from "./styles";
 
 import Microlink from "@microlink/react";
 import { useNavigate } from "react-router-dom";
 import ModalDelete from "../ModalDelete/ModalDelete";
+import ModalRepost from "../ModalRepost/ModalRepost";
 import { ReactTagify } from "react-tagify";
 
 import { Oval } from "react-loader-spinner";
@@ -52,8 +55,8 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
   const [liked, setLiked] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [seeComment, setSeeComment] = useState(false);
+  const [modalName, setModalName] = useState("");
   const navigate = useNavigate();
-
   const inputRef = useRef(null);
 
   async function editPost(token, id) {
@@ -126,6 +129,11 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
     setPutDescription(textSepareted.join(" "));
   }, [value.hashtags, value.text]);
 
+  function handleModal(modalName) {
+    setModalName(modalName);
+    setIsOpen(!isOpen);
+  }
+
   useEffect(() => {
     replaceText();
 
@@ -150,6 +158,10 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
             <AiOutlineComment />
           </ViewIconComment>
           <TextLike>{value.qtdcomments} comments</TextLike>
+          <ViewIconRepost onClick={() => handleModal("repost")}>
+            <BiRepost />
+          </ViewIconRepost>
+          <TextLike>{value.qtdreposts} re-posts</TextLike>
         </ContainerUser>
         <ContainerInfosPost>
           <form>
@@ -162,7 +174,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
                   <ContainerEdit onClick={(e) => openTextEdit(e)}>
                     <HiOutlinePencilSquare />
                   </ContainerEdit>
-                  <ContainerDelete onClick={() => setIsOpen(!isOpen)}>
+                  <ContainerDelete onClick={() => handleModal("delete")}>
                     <HiOutlineTrash />
                   </ContainerDelete>
                 </ContainerIconEdit>
@@ -209,13 +221,23 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
             </ContainerDescription>
           </form>
         </ContainerInfosPost>
-        <ModalDelete
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          postId={value.id}
-          getPostsTimeLine={getPostsTimeLine}
-          getHashtags={getHashtags}
-        />
+        {modalName === "repost" ? (
+          <ModalRepost
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            postId={value.id}
+            getPostsTimeLine={getPostsTimeLine}
+            getHashtags={getHashtags}
+          />
+        ) : (
+          <ModalDelete
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            postId={value.id}
+            getPostsTimeLine={getPostsTimeLine}
+            getHashtags={getHashtags}
+          />
+        )}
       </ViewPost>
       {seeComment ? <Comments value={value} /> : null}
     </>
