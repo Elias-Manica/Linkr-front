@@ -37,6 +37,8 @@ export default function TimelineScreen() {
 	const [qtdNewPost, setQtdNewPost] = useState(0);
 	const [hasMore, setHasMore] = useState(true);
 	const [page, setPage] = useState(1);
+	const [followingUsers, setFollowingUsers] = useState([]);
+
 	const userInfo = JSON.parse(localStorage.getItem("linkr"));
 
 	function hideMenu() {
@@ -113,9 +115,19 @@ export default function TimelineScreen() {
 		} catch (error) {}
 	}
 
+	async function getFollowingUsers() {
+		try {
+			const result = (await getFollowingList(userInfo.token)).data;
+			setFollowingUsers(result);
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
 	useEffect(() => {
 		getPostsTimeLine(0);
 		getHashtags();
+		getFollowingUsers();
 	}, []);
 
 	useInterval(() => {
