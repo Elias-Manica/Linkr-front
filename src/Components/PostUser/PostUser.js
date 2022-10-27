@@ -56,8 +56,6 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
 
   const inputRef = useRef(null);
 
-  console.log(value, " value");
-
   async function editPost(token, id) {
     setLoading(true);
     const body = {
@@ -66,7 +64,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
     };
     try {
       const response = await updatePost(token, body, id);
-      getPostsTimeLine();
+      getPostsTimeLine(0);
       setLoading(false);
     } catch (error) {
       alert("An error occured during edit post");
