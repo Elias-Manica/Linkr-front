@@ -164,7 +164,8 @@ export default function TimelineScreen() {
 								next={fetchData}
 								hasMore={hasMore}
 								loader={
-									followingUsers.length === 0 ? null : (
+									followingUsers.length === 0 ||
+									listOfPosts.length === 0 ? null : (
 										<ContainerLoading>
 											<Oval
 												height={80}
