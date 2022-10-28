@@ -3,6 +3,10 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
     display: flex;
     height: 100vh;
+
+    @media screen and (max-width: 1000px) {
+        flex-direction: column;
+    }
 `;
 
 export const LeftContainer = styled.div`
@@ -29,6 +33,29 @@ export const LeftContainer = styled.div`
         width: 442px;
         line-height: 64px;
     }
+    @media screen and (max-width: 1150px) {
+        font-size: 32px;
+        
+        h1 {
+            font-size: 85px;
+        }
+    }
+    @media screen and (max-width: 1000px) {
+        align-items: center;
+        flex-grow: 0;
+        width: 100%;
+        height: 175px;
+        font-size: 23px;
+        padding: 120px;
+        h1 {
+            font-size: 76px;
+            line-height: 60px;
+        }
+        p {
+            max-width: 240px;
+            text-align: center;
+        }
+        }
 `;
 
 export const RightContainer = styled.div`
@@ -46,6 +73,21 @@ export const RightContainer = styled.div`
         text-align: center;
         text-decoration: underline;
     }
+    @media screen and (max-width: 1000px) {
+        align-items: center;
+        flex-grow: 0;
+        width: 100%;
+        height: 175px;
+        font-size: 23px;
+        padding: 0px;
+        h1 {
+            font-size: 76px;
+            line-height: 60px;
+        }
+        p {
+            text-align: center;
+        }
+        }
 `;
 
 export const Form = styled.form`
@@ -65,6 +107,14 @@ export const Form = styled.form`
 
     input::placeholder {
         color: #9F9F9F;
+    }
+    @media screen and (max-width: 1000px) {
+        flex-direction: column;
+        flex-grow: 1;
+        height: auto;
+        padding: 22px;
+        margin-top:280px;
+        
     }
 `;
 
