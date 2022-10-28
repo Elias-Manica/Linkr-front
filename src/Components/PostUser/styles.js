@@ -6,6 +6,7 @@ export const ViewPost = styled.div`
   width: 100%;
   margin-bottom: 20px;
   margin-top: 20px;
+  padding-bottom: 20px;
   display: flex;
   justify-content: space-between;
   @media (max-width: 935px) {
@@ -24,7 +25,6 @@ export const ContainerUser = styled.div`
 
 export const ContainerInfosPost = styled.div`
   width: 80%;
-
   padding-top: 10px;
   margin-right: 15px;
   @media (max-width: 935px) {
@@ -49,6 +49,13 @@ export const ViewIcon = styled.div`
 `;
 
 export const ViewIconComment = styled.div`
+  margin-top: 15px;
+  font-size: 27px;
+  cursor: pointer;
+  color: white;
+`;
+
+export const ViewIconRepost = styled.div`
   margin-top: 15px;
   font-size: 27px;
   cursor: pointer;
