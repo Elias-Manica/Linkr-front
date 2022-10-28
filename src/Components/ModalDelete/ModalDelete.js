@@ -34,7 +34,7 @@ export default function ModalDelete({
 
       setLoading(false);
       setIsOpen(false);
-      getPostsTimeLine();
+      getPostsTimeLine(0);
       getHashtags();
     } catch (error) {
       alert(`You cannot delete this post!`);

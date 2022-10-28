@@ -67,7 +67,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
     };
     try {
       const response = await updatePost(token, body, id);
-      getPostsTimeLine();
+      getPostsTimeLine(0);
       setLoading(false);
     } catch (error) {
       alert("An error occured during edit post");
@@ -92,15 +92,6 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
     const hashtag = name.substring(1);
 
     navigate(`/hashtag/${hashtag}`);
-  }
-
-  async function commentPost(e) {
-    e.preventDefault();
-    await insertCommentIntoPost(value.id, userInfo.token, commentText);
-  }
-
-  function handleInput(e) {
-    setCommentText(e.target.value);
   }
 
   async function likePost() {
