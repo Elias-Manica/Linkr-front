@@ -1,6 +1,8 @@
+import { useContext } from "react";
 import { Oval } from "react-loader-spinner";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import QueriedUserInfo from "../../Contexts/QueriedUserInfo/QueriedUserInfo";
 export default function UserSearchInfo({
 	user,
 	loading,
@@ -8,9 +10,11 @@ export default function UserSearchInfo({
 	setSearchClass,
 }) {
 	const navigate = useNavigate();
+	const { setSearchedUser } = useContext(QueriedUserInfo);
 
 	function goToUser() {
 		navigate(`/users/${user.id}`);
+		setSearchedUser(user);
 		setSearchValue("");
 		setSearchClass("hidden");
 	}
