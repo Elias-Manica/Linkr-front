@@ -19,6 +19,8 @@ export default function ModalDelete({
   postId,
   getPostsTimeLine,
   getHashtags,
+  isProfile,
+  getPosts,
 }) {
   const userInfo = JSON.parse(localStorage.getItem("linkr"));
   const [loading, setLoading] = useState(false);
@@ -34,7 +36,15 @@ export default function ModalDelete({
 
       setLoading(false);
       setIsOpen(false);
-      getPostsTimeLine(0);
+      console.log(isProfile, " isprofile");
+      if (!isProfile) {
+        getPostsTimeLine(0);
+        getHashtags();
+
+        return;
+      }
+      console.log("saiu");
+      getPosts(Number(userInfo.userid));
       getHashtags();
     } catch (error) {
       alert(`You cannot delete this post!`);

@@ -45,7 +45,13 @@ import { ReactTagify } from "react-tagify";
 import { Oval } from "react-loader-spinner";
 import Comments from "../Comments/Comments";
 
-export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
+export default function PostUser({
+  value,
+  getPostsTimeLine,
+  getHashtags,
+  isProfile,
+  getPosts,
+}) {
   const userInfo = JSON.parse(localStorage.getItem("linkr"));
   const [isOpen, setIsOpen] = useState(false);
   const [description, setDescription] = useState("");
@@ -54,7 +60,6 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
   const [loading, setLoading] = useState(false);
   const [liked, setLiked] = useState(false);
   const [qtdLike, setQtdLike] = useState(0);
-  const [qtdComment, setQtdComment] = useState(0);
   const [seeComment, setSeeComment] = useState(false);
   const [modalName, setModalName] = useState("");
   const navigate = useNavigate();
@@ -67,13 +72,18 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
       text: putDescription,
     };
     try {
-      await updatePost(token, body, id);
-      console.log(putDescription);
-
-      getPostsTimeLine(0);
+      const response = await updatePost(token, body, id);
+      console.log(isProfile);
+      if (!isProfile) {
+        getPostsTimeLine(0);
+        getHashtags();
+        setLoading(false);
+        console.log("entrou");
+        return;
+      }
+      console.log("saiu");
+      getPosts(Number(userInfo.userid));
       getHashtags();
-      setDescription(putDescription);
-      setEdit(false);
       setLoading(false);
     } catch (error) {
       alert("An error occured during edit post");
@@ -85,7 +95,6 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
     e.preventDefault();
     if (edit === true && putDescription !== description) {
       editPost(userInfo.token, value.id);
-
       return;
     }
     setEdit(!edit);
@@ -134,7 +143,6 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
       setLiked(true);
     }
     setQtdLike(value.qtdlikes);
-    setQtdComment(value.qtdcomments);
   }, [value.hashtags, value.text]);
 
   function handleModal(modalName) {
@@ -148,7 +156,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
     if (edit) {
       inputRef.current.focus();
     }
-  }, [replaceText, edit, description]);
+  }, [replaceText, edit]);
 
   return (
     <>
@@ -165,7 +173,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
           <ViewIconComment onClick={() => setSeeComment(!seeComment)}>
             <AiOutlineComment />
           </ViewIconComment>
-          <TextLike>{qtdComment} comments</TextLike>
+          <TextLike>{value.qtdcomments} comments</TextLike>
           <ViewIconRepost onClick={() => handleModal("repost")}>
             <BiRepost />
           </ViewIconRepost>
@@ -244,16 +252,12 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
             postId={value.id}
             getPostsTimeLine={getPostsTimeLine}
             getHashtags={getHashtags}
+            isProfile={isProfile}
+            getPosts={getPosts}
           />
         )}
       </ViewPost>
-      {seeComment ? (
-        <Comments
-          value={value}
-          setQtdComment={setQtdComment}
-          qtdComment={qtdComment}
-        />
-      ) : null}
+      {seeComment ? <Comments value={value} /> : null}
     </>
   );
 }
