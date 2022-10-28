@@ -143,6 +143,7 @@ export default function TimelineScreen() {
 				showMenu={showMenu}
 				setShowMenu={setShowMenu}
 				hideMenu={hideMenu}
+				followingUsers={followingUsers}
 			/>
 			<Container>
 				<ContainerOfViewsInfos>
