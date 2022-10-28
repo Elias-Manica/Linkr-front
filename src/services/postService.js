@@ -41,7 +41,7 @@ async function insertLikePost(token, postId) {
   };
 
   const promise = await axios.post(
-    `${LOCAL_HOST}/post/like/${postId}`,
+    `${BASE_URL}/post/like/${postId}`,
     {},
     config
   );
@@ -56,7 +56,7 @@ async function removeLikePost(token, postId) {
   };
 
   const promise = await axios.post(
-    `${LOCAL_HOST}/post/dislike/${postId}`,
+    `${BASE_URL}/post/dislike/${postId}`,
     {},
     config
   );
@@ -89,7 +89,7 @@ async function insertCommentIntoPost(postId, token, description) {
 }
 
 async function getComments(postid) {
-  const promise = await axios.get(`${LOCAL_HOST}/post/comment/${postid}`);
+  const promise = await axios.get(`${BASE_URL}/post/comment/${postid}`);
   return promise;
 }
 
