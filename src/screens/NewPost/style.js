@@ -24,6 +24,7 @@ const Css = {
     border-radius: 50%;
     margin: 10px;
     object-fit: cover;
+    cursor: pointer;
   `,
   ProfileLabel: styled.div`
     width: 18%;

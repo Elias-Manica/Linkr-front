@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 
-import { IoMdHeartEmpty, IoMdHeart} from "react-icons/io";
+import { IoMdHeartEmpty, IoMdHeart } from "react-icons/io";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
 import { TbSend } from "react-icons/tb";
 import { AiOutlineComment } from "react-icons/ai";
@@ -66,8 +66,13 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
       text: putDescription,
     };
     try {
-      const response = await updatePost(token, body, id);
+      await updatePost(token, body, id);
+      console.log(putDescription);
+
       getPostsTimeLine(0);
+      getHashtags();
+      setDescription(putDescription);
+      setEdit(false);
       setLoading(false);
     } catch (error) {
       alert("An error occured during edit post");
@@ -79,6 +84,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
     e.preventDefault();
     if (edit === true && putDescription !== description) {
       editPost(userInfo.token, value.id);
+
       return;
     }
     setEdit(!edit);
@@ -140,7 +146,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
     if (edit) {
       inputRef.current.focus();
     }
-  }, [replaceText, edit]);
+  }, [replaceText, edit, description]);
 
   return (
     <>
