@@ -76,8 +76,8 @@ export default function UserPostsScreen() {
         return;
       }
       setUserPosts(result.data);
-      setUsername(userInfo.username);
-      setProfileUrl(userInfo.pictureurl);
+      setUsername(result.data[0].username);
+      setProfileUrl(result.data[0].pictureurl);
       setLoading(false);
     } catch (error) {
       console.error(error);
