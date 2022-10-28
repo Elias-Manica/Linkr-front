@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { DebounceInput } from "react-debounce-input";
 import ButtonFollow from "../ButtonFollow.js/ButtonFollow";
@@ -58,12 +58,11 @@ export default function UserPostsScreen() {
     }
   }
 
-  async function getPosts(id) {
-    console.log(searchedUser);
+  const getPosts = useCallback(async () => {
     setLoading(true);
     try {
       const result = await getUserPosts(id);
-      console.log(result);
+      console.log(result.data, " data");
       if (result.data.length === 0 && Number(userInfo.userid) === Number(id)) {
         setLoading(false);
         setProfileUrl(userInfo.pictureurl);
@@ -83,12 +82,19 @@ export default function UserPostsScreen() {
     } catch (error) {
       console.error(error);
     }
-  }
+  }, [
+    id,
+    searchedUser.pictureurl,
+    searchedUser.username,
+    userInfo.pictureurl,
+    userInfo.userid,
+    userInfo.username,
+  ]);
 
   useEffect(() => {
     getHashtags();
     getPosts(id);
-  }, [id]);
+  }, [id, getPosts, setUserPosts]);
 
   return (
     <>
