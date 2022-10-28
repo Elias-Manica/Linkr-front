@@ -74,10 +74,13 @@ export const SearchArea = styled.div`
 	.searchBar {
 		width: 100%;
 		width: 100%;
+		border: none;
+		font-size: 16px;
 	}
 
-	.searchBar:focus-within {
+	.searchBar:focus {
 		border: none;
+		outline: none;
 	}
 
 	.search {
@@ -89,8 +92,8 @@ export const SearchArea = styled.div`
 	}
 
 	.hidden {
+		width: 100%;
 		display: none;
 	}
 `;
-
 //colinha
