@@ -53,7 +53,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
   const [putDescription, setPutDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [liked, setLiked] = useState(false);
-  const [commentText, setCommentText] = useState("");
+  const [qtdLike, setQtdLike] = useState(0);
   const [seeComment, setSeeComment] = useState(false);
   const [modalName, setModalName] = useState("");
   const navigate = useNavigate();
@@ -96,11 +96,13 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
 
   async function likePost() {
     if (liked) {
-      await removeLikePost(userInfo.token, value.id, userInfo.id);
       setLiked(false);
+      setQtdLike(Number(qtdLike) - 1);
+      await removeLikePost(userInfo.token, value.id);
     } else {
-      await insertLikePost(userInfo.token, value.id, userInfo.id);
       setLiked(true);
+      setQtdLike(Number(qtdLike) + 1);
+      await insertLikePost(userInfo.token, value.id);
     }
   }
 
@@ -118,6 +120,13 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
     }
     setDescription(textSepareted.join(" "));
     setPutDescription(textSepareted.join(" "));
+    const hasLiked = value.usersIdLiked.find(
+      (item) => Number(item) === Number(userInfo.userid)
+    );
+    if (hasLiked) {
+      setLiked(true);
+    }
+    setQtdLike(value.qtdlikes);
   }, [value.hashtags, value.text]);
 
   function handleModal(modalName) {
@@ -144,7 +153,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
           <ViewIcon liked={liked} onClick={() => likePost()}>
             {liked ? <IoMdHeart /> : <IoMdHeartEmpty />}
           </ViewIcon>
-          <TextLike>{value.qtdlikes} likes</TextLike>
+          <TextLike>{qtdLike} likes</TextLike>
           <ViewIconComment onClick={() => setSeeComment(!seeComment)}>
             <AiOutlineComment />
           </ViewIconComment>
