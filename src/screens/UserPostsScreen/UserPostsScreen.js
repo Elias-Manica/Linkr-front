@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { DebounceInput } from "react-debounce-input";
 import ButtonFollow from "../ButtonFollow.js/ButtonFollow";
@@ -21,6 +21,7 @@ import HashtagDiv from "../../Components/HashtagDiv/HashtagDiv.js";
 import { TitleImg } from "./styles.js";
 import Css from "../NewPost/style";
 import CssButton from "../ButtonFollow.js/styles";
+import QueriedUserInfo from "../../Contexts/QueriedUserInfo/QueriedUserInfo";
 
 export default function UserPostsScreen() {
 	const { id } = useParams(); //id da tela que a gente vê
@@ -32,7 +33,9 @@ export default function UserPostsScreen() {
 	const [loadingHashtag, setLoadingHashtag] = useState(false);
 	const [hashtagList, setHashtagList] = useState([]);
 	const [showMenu, setShowMenu] = useState(false);
-	console.log(userInfo.userid, id)
+	const { searchedUser } = useContext(QueriedUserInfo);
+
+	console.log(userInfo.userid, id);
 	function hideMenu() {
 		if (showMenu) {
 			setShowMenu(false);
@@ -55,13 +58,19 @@ export default function UserPostsScreen() {
 	}
 
 	async function getPosts(id) {
+		console.log(searchedUser);
 		setLoading(true);
 		try {
 			const result = await getUserPosts(id);
 			console.log(result);
+			if (result.data.length == 0) {
+				setLoading(false);
+				setProfileUrl(searchedUser.pictureurl);
+				setUsername(searchedUser.username);
+			}
+			setUserPosts(result.data);
 			setUsername(result.data[0].userInfo.username);
 			setProfileUrl(result.data[0].userInfo.pictureurl);
-			setUserPosts(result.data);
 			setLoading(false);
 		} catch (error) {
 			console.error(error);
@@ -83,14 +92,15 @@ export default function UserPostsScreen() {
 			<Container>
 				<ContainerOfViewsInfos>
 					<CssButton.HeaderScreen>
-					<Title>
-						<TitleImg src={profileUrl} alt="" />
-						{username}
-					</Title>
-					{Number(userInfo.userid)===Number(id) ? null : <ButtonFollow userInfo={userInfo} id={id}/>
-}						
+						<Title>
+							<TitleImg src={profileUrl} alt="" />
+							{username}
+						</Title>
+						{Number(userInfo.userid) === Number(id) ? null : (
+							<ButtonFollow userInfo={userInfo} id={id} />
+						)}
 					</CssButton.HeaderScreen>
-					
+
 					<ContainerInfosTimeLine>
 						<ContainerPosts>
 							{loading === true ? (

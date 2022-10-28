@@ -13,18 +13,25 @@ import { postLogout, searchUsers } from "../../services/linkrService";
 import { DebounceInput } from "react-debounce-input";
 import UserSearchInfo from "../UserSearchInfo/UserSearchInfo";
 
-export default function TopBar({ showMenu, setShowMenu, hideMenu }) {
+export default function TopBar({
+	showMenu,
+	setShowMenu,
+	hideMenu,
+	followingUsers,
+}) {
 	const [searchValue, setSearchValue] = useState("");
 	const [searchResult, setSearchResult] = useState([]);
 	const [searchClass, setSearchClass] = useState("hidden");
+	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 	const userInfo = JSON.parse(localStorage.getItem("linkr"));
 
+	//console.log(followingUsers); //'userId 6 => segue 7,8 e 18
 	useEffect(() => {
-		if(localStorage.getItem("linkr") === null) {
+		if (localStorage.getItem("linkr") === null) {
 			navigate("/");
 		}
-	  }, [navigate]);
+	}, [navigate]);
 
 	function userLogout() {
 		postLogout(userInfo.token)
@@ -39,33 +46,25 @@ export default function TopBar({ showMenu, setShowMenu, hideMenu }) {
 	}
 	async function getSearchResult(searchValue) {
 		try {
-			if (searchValue.length < 0) {
-				setSearchClass("hidden");
-				setSearchResult([]);
-				return;
-			}
+			setSearchValue(searchValue);
+			setSearchClass("loading");
+			setLoading(true);
 			const result = await searchUsers(searchValue);
-			console.log(result);
+			setLoading(false);
+			setSearchResult(result.data);
 			if (result.data.length > 0) {
-				setSearchResult(result.data);
 				setSearchClass("search");
 			} else {
 				setSearchClass("hidden");
 			}
 		} catch (error) {
+			setLoading(false);
+			setSearchClass("hidden");
 			console.error(error);
 		}
 	}
 
-	function handleDebounce(event) {
-		setSearchValue(event.target.value);
-		if (searchValue.length < 3) {
-			setSearchClass("hidden");
-		}
-		getSearchResult(searchValue);
-	}
-	
-	if(userInfo) {
+	if (userInfo) {
 		return (
 			<>
 				<Container onClick={hideMenu}>
@@ -76,14 +75,22 @@ export default function TopBar({ showMenu, setShowMenu, hideMenu }) {
 							value={searchValue}
 							className="searchBar"
 							placeholder="Search for people"
-							minLength={2}
+							minLength={3}
 							debounceTimeout={300}
-							onChange={(e) => handleDebounce(e)}
+							onChange={(e) => {
+								getSearchResult(e.target.value);
+							}}
 						/>
 						<div className={searchClass}>
-							{searchResult.map((user, index) => {
-								return <UserSearchInfo user={user} key={index} />;
-							})}
+							{searchResult.map((user, index) => (
+								<UserSearchInfo
+									user={user}
+									key={index}
+									loading={loading}
+									setSearchValue={setSearchValue}
+									setSearchClass={setSearchClass}
+								/>
+							))}
 						</div>
 					</SearchArea>
 					<ContainerInfosUser onClick={() => setShowMenu(!showMenu)}>
@@ -97,6 +104,6 @@ export default function TopBar({ showMenu, setShowMenu, hideMenu }) {
 			</>
 		);
 	} else {
-		return <Navigate to="/" />
+		return <Navigate to="/" />;
 	}
 }
