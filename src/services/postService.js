@@ -33,6 +33,18 @@ async function deletePost(token, id) {
   const promise = await axios.delete(`${BASE_URL}/post/${id}`, config);
   return promise;
 }
+
+async function rePost(token, id) {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const promise = axios.post(`${BASE_URL}/post/${id}`, {}, config);
+  return promise;
+}
+
 async function insertLikePost(token, postId) {
   const config = {
     headers: {
@@ -98,6 +110,7 @@ export {
   listHashtags,
   listOneHashtag,
   deletePost,
+  rePost,
   insertLikePost,
   removeLikePost,
   updatePost,
