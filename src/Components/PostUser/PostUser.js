@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 
-import { IoMdHeartEmpty, IoMdHeart} from "react-icons/io";
+import { IoMdHeartEmpty, IoMdHeart } from "react-icons/io";
 import { HiOutlinePencilSquare, HiOutlineTrash } from "react-icons/hi2";
 import { TbSend } from "react-icons/tb";
 import { AiOutlineComment } from "react-icons/ai";
@@ -54,6 +54,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
   const [loading, setLoading] = useState(false);
   const [liked, setLiked] = useState(false);
   const [qtdLike, setQtdLike] = useState(0);
+  const [qtdComment, setQtdComment] = useState(0);
   const [seeComment, setSeeComment] = useState(false);
   const [modalName, setModalName] = useState("");
   const navigate = useNavigate();
@@ -66,8 +67,13 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
       text: putDescription,
     };
     try {
-      const response = await updatePost(token, body, id);
+      await updatePost(token, body, id);
+      console.log(putDescription);
+
       getPostsTimeLine(0);
+      getHashtags();
+      setDescription(putDescription);
+      setEdit(false);
       setLoading(false);
     } catch (error) {
       alert("An error occured during edit post");
@@ -79,6 +85,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
     e.preventDefault();
     if (edit === true && putDescription !== description) {
       editPost(userInfo.token, value.id);
+
       return;
     }
     setEdit(!edit);
@@ -127,6 +134,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
       setLiked(true);
     }
     setQtdLike(value.qtdlikes);
+    setQtdComment(value.qtdcomments);
   }, [value.hashtags, value.text]);
 
   function handleModal(modalName) {
@@ -140,7 +148,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
     if (edit) {
       inputRef.current.focus();
     }
-  }, [replaceText, edit]);
+  }, [replaceText, edit, description]);
 
   return (
     <>
@@ -157,7 +165,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
           <ViewIconComment onClick={() => setSeeComment(!seeComment)}>
             <AiOutlineComment />
           </ViewIconComment>
-          <TextLike>{value.qtdcomments} comments</TextLike>
+          <TextLike>{qtdComment} comments</TextLike>
           <ViewIconRepost onClick={() => handleModal("repost")}>
             <BiRepost />
           </ViewIconRepost>
@@ -239,7 +247,13 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
           />
         )}
       </ViewPost>
-      {seeComment ? <Comments value={value} /> : null}
+      {seeComment ? (
+        <Comments
+          value={value}
+          setQtdComment={setQtdComment}
+          qtdComment={qtdComment}
+        />
+      ) : null}
     </>
   );
 }

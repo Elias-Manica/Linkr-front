@@ -23,7 +23,7 @@ import { TbSend } from "react-icons/tb";
 import { Oval } from "react-loader-spinner";
 import { ContainerLOading } from "../PostUser/styles";
 
-export default function Comments({ value }) {
+export default function Comments({ value, setQtdComment, qtdComment }) {
   const userInfo = JSON.parse(localStorage.getItem("linkr"));
   const [commentText, setCommentText] = useState("");
   const [listAllComment, setListAllComment] = useState([]);
@@ -31,11 +31,13 @@ export default function Comments({ value }) {
 
   async function commentPost(e) {
     e.preventDefault();
+
     const response = await insertCommentIntoPost(
       value.id,
       userInfo.token,
       commentText
     );
+    setQtdComment(Number(qtdComment) + 1);
     setCommentText("");
     listComment();
   }
@@ -83,28 +85,30 @@ export default function Comments({ value }) {
               />
             </ContainerLOading>
           ) : (
-            listAllComment.map((value) => (
-              <>
-                <ContainerComment>
-                  <ContainerImage src={value.pictureurl} />
-                  <ViewDescriptionComment>
-                    <ContainerName>
-                      <NameUser>{value.username}</NameUser>
-                      <StatusUser>
-                        {value.follow ? "• following" : null}
-                        {value.owner ? "• post’s author" : null}
-                      </StatusUser>
-                    </ContainerName>
-                    <DescriptionPost>{value.description}</DescriptionPost>
-                  </ViewDescriptionComment>
-                </ContainerComment>
-                <Line />
-              </>
-            ))
+            listAllComment.map((value) =>
+              value.id ? (
+                <>
+                  <ContainerComment>
+                    <ContainerImage src={value.pictureurl} />
+                    <ViewDescriptionComment>
+                      <ContainerName>
+                        <NameUser>{value.username}</NameUser>
+                        <StatusUser>
+                          {value.follow ? "• following" : null}
+                          {value.owner ? "• post’s author" : null}
+                        </StatusUser>
+                      </ContainerName>
+                      <DescriptionPost>{value.description}</DescriptionPost>
+                    </ViewDescriptionComment>
+                  </ContainerComment>
+                  <Line />
+                </>
+              ) : null
+            )
           )}
         </ContainerSeeCOmments>
         <CommentsContainer>
-          <img src={value.pictureurl} alt="" />
+          <img src={userInfo.pictureurl} alt="" />
           <form onSubmit={commentPost}>
             <input
               type="text"
