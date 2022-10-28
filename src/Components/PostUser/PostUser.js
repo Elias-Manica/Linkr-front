@@ -54,6 +54,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
   const [loading, setLoading] = useState(false);
   const [liked, setLiked] = useState(false);
   const [qtdLike, setQtdLike] = useState(0);
+  const [qtdComment, setQtdComment] = useState(0);
   const [seeComment, setSeeComment] = useState(false);
   const [modalName, setModalName] = useState("");
   const navigate = useNavigate();
@@ -133,6 +134,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
       setLiked(true);
     }
     setQtdLike(value.qtdlikes);
+    setQtdComment(value.qtdcomments);
   }, [value.hashtags, value.text]);
 
   function handleModal(modalName) {
@@ -163,7 +165,7 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
           <ViewIconComment onClick={() => setSeeComment(!seeComment)}>
             <AiOutlineComment />
           </ViewIconComment>
-          <TextLike>{value.qtdcomments} comments</TextLike>
+          <TextLike>{qtdComment} comments</TextLike>
           <ViewIconRepost onClick={() => handleModal("repost")}>
             <BiRepost />
           </ViewIconRepost>
@@ -245,7 +247,13 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
           />
         )}
       </ViewPost>
-      {seeComment ? <Comments value={value} /> : null}
+      {seeComment ? (
+        <Comments
+          value={value}
+          setQtdComment={setQtdComment}
+          qtdComment={qtdComment}
+        />
+      ) : null}
     </>
   );
 }
