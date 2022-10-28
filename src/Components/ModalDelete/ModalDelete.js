@@ -44,8 +44,9 @@ export default function ModalDelete({
         return;
       }
       console.log("saiu");
-      getPosts(Number(userInfo.userid));
+
       getHashtags();
+      getPosts(Number(userInfo.userid));
     } catch (error) {
       alert(`You cannot delete this post!`);
       setLoading(false);
