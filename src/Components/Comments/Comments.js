@@ -37,6 +37,7 @@ export default function Comments({ value, setQtdComment, qtdComment }) {
       userInfo.token,
       commentText
     );
+    console.log("teste");
     setQtdComment(Number(qtdComment) + 1);
     setCommentText("");
     listComment();
@@ -63,7 +64,7 @@ export default function Comments({ value, setQtdComment, qtdComment }) {
 
   useEffect(() => {
     listComment();
-  }, []);
+  }, [qtdComment]);
 
   return (
     <>
