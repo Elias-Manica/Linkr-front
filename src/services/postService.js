@@ -33,7 +33,7 @@ async function deletePost(token, id) {
   const promise = await axios.delete(`${BASE_URL}/post/${id}`, config);
   return promise;
 }
-async function insertLikePost(token, postId, userId) {
+async function insertLikePost(token, postId) {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -41,25 +41,23 @@ async function insertLikePost(token, postId, userId) {
   };
 
   const promise = await axios.post(
-    `${BASE_URL}/post/like/${postId}`,
-    { userId },
+    `${LOCAL_HOST}/post/like/${postId}`,
+    {},
     config
   );
   return promise;
 }
 
-async function removeLikePost(token, postId, userId) {
+async function removeLikePost(token, postId) {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
-    data: {
-      userId,
-    },
   };
 
-  const promise = await axios.delete(
-    `${BASE_URL}/post/dislike/${postId}`,
+  const promise = await axios.post(
+    `${LOCAL_HOST}/post/dislike/${postId}`,
+    {},
     config
   );
   return promise;
@@ -91,7 +89,7 @@ async function insertCommentIntoPost(postId, token, description) {
 }
 
 async function getComments(postid) {
-  const promise = await axios.get(`${BASE_URL}/post/comment/${postid}`);
+  const promise = await axios.get(`${LOCAL_HOST}/post/comment/${postid}`);
   return promise;
 }
 

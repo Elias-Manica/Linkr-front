@@ -115,6 +115,12 @@ export default function PostUser({ value, getPostsTimeLine, getHashtags }) {
     }
     setDescription(textSepareted.join(" "));
     setPutDescription(textSepareted.join(" "));
+    const hasLiked = value.usersIdLiked.find(
+      (item) => Number(item) === Number(userInfo.userid)
+    );
+    if (hasLiked) {
+      setLiked(true);
+    }
   }, [value.hashtags, value.text]);
 
   useEffect(() => {
