@@ -56,10 +56,13 @@ export default function SignUpScreen() {
     return (
         <Wrapper>
             <LeftContainer>
+                <div>
                 <h1>linkr</h1>
                 <h2>save, share and discover the best links on the web</h2>
+                </div>
             </LeftContainer>
             <RightContainer>
+                <div>
                 <Form onSubmit={signUp}>
                     <input 
                         type="email" 
@@ -70,7 +73,6 @@ export default function SignUpScreen() {
                         disabled={disabled} 
                         required 
                     />
-
                     <input 
                         type="password" 
                         name="password" 
@@ -103,7 +105,7 @@ export default function SignUpScreen() {
                     
                     <Button type="submit" disabled={disabled} onClick={verifyEmptyFields}>Sign Up</Button>
                 </Form>
-
+                </div>
                 <Link to={"/"}>
                     <p>Switch back to log in</p>
                 </Link>

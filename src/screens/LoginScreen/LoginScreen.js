@@ -62,10 +62,13 @@ export default function LoginScreen() {
 	return (
 		<Wrapper>
 			<LeftContainer>
+				<div>
 				<h1>linkr</h1>
 				<h2>save, share and discover the best links on the web</h2>
+				</div>
 			</LeftContainer>
 			<RightContainer>
+				<div>
 				<Form onSubmit={login}>
 					<input
 						type="email"
@@ -91,7 +94,8 @@ export default function LoginScreen() {
 						Log In
 					</Button>
 				</Form>
-
+				</div>
+				
 				<Link to={"/sign-up"}>
 					<p>First time? Create an account!</p>
 				</Link>

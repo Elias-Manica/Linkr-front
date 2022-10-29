@@ -60,5 +60,8 @@ a{
 body{
 	background-color: #333333;
     font-family: 'Lexend Deca';
+	width: 100%;
+	height: 100vh;
+	box-sizing: border-box;
 }
 `;
